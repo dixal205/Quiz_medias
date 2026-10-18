@@ -1,0 +1,6654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no,
+viewport-fit=cover">
+
+<title>Quiz Medias</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    user-select:none;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    overscroll-behavior:none;
+}
+
+body{
+    padding-top:env(safe-area-inset-top);
+    padding-bottom:env(safe-area-inset-bottom);
+    padding-left:env(safe-area-inset-left);
+    padding-right:env(safe-area-inset-right);
+}
+
+body{
+    font-family:Arial,sans-serif;
+    color:#222;
+    min-height:100vh;
+    overflow-x:hidden;
+
+    background:
+        radial-gradient(circle at 10% 10%,#ffffff 0 4%,transparent 5%),
+        radial-gradient(circle at 90% 20%,#fff4a8 0 5%,transparent 6%),
+        linear-gradient(135deg,#8ee7ff,#b9f7d5,#ffe7a8,#ffb7d5);
+
+    transition:background .5s ease;
+}
+
+/* THEMES */
+
+body.theme-sunset{
+    background:
+        radial-gradient(circle at 10% 10%,#fff 0 4%,transparent 5%),
+        linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb);
+}
+
+body.theme-ocean{
+    background:
+        radial-gradient(circle at 20% 20%,#fff 0 3%,transparent 4%),
+        linear-gradient(135deg,#74ebd5,#9face6);
+}
+
+body.theme-space{
+    background:
+        radial-gradient(circle at 20% 20%,#ffffff 0 1%,transparent 1.5%),
+        radial-gradient(circle at 80% 30%,#ffffff 0 1%,transparent 1.5%),
+        radial-gradient(circle at 50% 70%,#ffffff 0 1%,transparent 1.5%),
+        linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+}
+
+body.theme-forest{
+    background:
+        radial-gradient(circle at 15% 15%,#ffffff 0 3%,transparent 4%),
+        linear-gradient(135deg,#56ab2f,#a8e063);
+}
+
+/* TOY BACKGROUND */
+
+.toys{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+}
+
+.toy{
+    position:absolute;
+    font-size:40px;
+    opacity:.22;
+    animation:floatToy 8s ease-in-out infinite;
+}
+
+.toy1{left:3%;top:8%}
+.toy2{left:80%;top:10%;animation-delay:1s}
+.toy3{left:15%;top:75%;animation-delay:2s}
+.toy4{left:85%;top:70%;animation-delay:3s}
+.toy5{left:45%;top:5%;animation-delay:4s}
+.toy6{left:50%;top:85%;animation-delay:5s}
+.toy7{left:65%;top:45%;animation-delay:2.5s}
+.toy8{left:5%;top:45%;animation-delay:1.5s}
+
+@keyframes floatToy{
+
+    0%,100%{
+        transform:translateY(0) rotate(-5deg);
+    }
+
+    50%{
+        transform:translateY(-18px) rotate(5deg);
+    }
+
+}
+
+/* MAIN */
+
+.container{
+    position:relative;
+    z-index:1;
+    width:94%;
+    max-width:900px;
+    margin:auto;
+    padding:10px 0 30px;
+}
+
+/* SCREENS */
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+    animation:screenIn .3s ease;
+}
+
+@keyframes screenIn{
+
+    from{
+        opacity:0;
+        transform:translateY(12px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* CARD */
+
+.card{
+    background:rgba(255,255,255,.96);
+    border-radius:25px;
+    padding:22px;
+    margin-top:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+
+body.theme-space .card{
+    background:rgba(20,30,48,.94);
+    color:white;
+}
+
+body.theme-space .stat,
+body.theme-space .answer-btn{
+    color:#222;
+}
+
+/* START */
+
+.start-card{
+    text-align:center;
+    padding:50px 20px;
+}
+
+.game-logo{
+    font-size:70px;
+    margin-bottom:10px;
+    animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-12px);
+    }
+
+}
+
+.game-title{
+    font-size:42px;
+    color:#5b4bd8;
+    margin:10px 0;
+    text-shadow:2px 3px 0 #ffd84d;
+}
+
+/* BUTTONS */
+
+button{
+    border:none;
+    border-radius:15px;
+    padding:13px 18px;
+    margin:5px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    touch-action:manipulation;
+    transition:transform .15s,box-shadow .15s;
+}
+
+button:active{
+    transform:scale(.95);
+}
+
+button:disabled{
+    cursor:not-allowed;
+    opacity:.7;
+}
+
+.main-btn{
+    background:linear-gradient(135deg,#667eea,#8b5cf6);
+    color:white;
+}
+
+.shop-btn{
+    background:linear-gradient(135deg,#ffb52e,#ff7b22);
+    color:white;
+}
+
+.page-btn{
+    background:linear-gradient(135deg,#667eea,#4f46e5);
+    color:white;
+}
+
+.back-btn{
+    background:#555;
+    color:white;
+}
+
+.voice-btn{
+    background:linear-gradient(135deg,#06b6d4,#2563eb);
+    color:white;
+    width:90%;
+}
+
+.voice-btn.speaking{
+    animation:pulse .7s infinite alternate;
+}
+
+@keyframes pulse{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.05);
+    }
+
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin:15px 0;
+}
+
+.stat{
+    background:linear-gradient(135deg,#f4f6ff,#fff5d9);
+    border:2px solid #e2e5ff;
+    border-radius:15px;
+    padding:11px 5px;
+    text-align:center;
+    font-weight:bold;
+}
+
+/* RANKS */
+
+.rank-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:20px;
+}
+
+.rank-card{
+    background:linear-gradient(135deg,#fff,#eef1ff);
+    border:3px solid #ddd;
+    border-radius:20px;
+    padding:15px;
+    text-align:center;
+    font-weight:bold;
+    font-size:19px;
+}
+
+.rank-card small{
+    display:block;
+    margin-top:5px;
+    color:#666;
+    font-size:13px;
+    font-weight:normal;
+}
+
+/* LEVELS */
+
+.level-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:9px;
+    margin-top:20px;
+    max-height:60vh;
+    overflow-y:auto;
+    padding:10px;
+    border:2px solid #ddd;
+    border-radius:18px;
+    background:rgba(250,250,250,.85);
+}
+
+.level-btn{
+    width:100%;
+    margin:0;
+    min-height:48px;
+    background:linear-gradient(135deg,#4caf50,#22c55e);
+    color:white;
+}
+
+.level-btn.locked{
+    background:linear-gradient(135deg,#999,#777);
+}
+
+/* QUIZ */
+
+.quiz-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:7px;
+    font-weight:bold;
+}
+
+.timer{
+    background:linear-gradient(135deg,#ff5252,#e11d48);
+    color:white;
+    padding:8px 12px;
+    border-radius:12px;
+}
+
+.progress-box{
+    width:100%;
+    height:15px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+    margin:15px 0;
+}
+
+.progress{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#4caf50,#22c55e,#84cc16);
+    transition:width .3s;
+}
+
+.question{
+    font-size:24px;
+    font-weight:bold;
+    text-align:center;
+    margin:25px 0 15px;
+    line-height:1.35;
+    min-height:75px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    white-space:pre-line;
+}
+
+.answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+}
+
+.answer-btn{
+    width:100%;
+    margin:0;
+    min-height:60px;
+    background:linear-gradient(135deg,#eef1ff,#f8f9ff);
+    border:2px solid #dfe3ff;
+}
+
+.answer-btn.correct{
+    background:linear-gradient(135deg,#4caf50,#16a34a);
+    color:white;
+}
+
+.answer-btn.wrong{
+    background:linear-gradient(135deg,#ef4444,#dc2626);
+    color:white;
+}
+
+#message{
+    text-align:center;
+    font-weight:bold;
+    min-height:28px;
+    font-size:17px;
+}
+
+.tools{
+    text-align:center;
+    margin-top:20px;
+}
+
+/* RESULT */
+
+.result{
+    text-align:center;
+}
+
+.result h1{
+    color:#5b4bd8;
+}
+
+/* SHOP */
+
+.shop-item{
+    background:linear-gradient(135deg,#f8f9ff,#fff7df);
+    border:2px solid #e5e7eb;
+    border-radius:18px;
+    padding:16px;
+    margin:12px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.shop-item button{
+    background:linear-gradient(135deg,#667eea,#4f46e5);
+    color:white;
+}
+
+.small{
+    font-size:14px;
+    color:#666;
+}
+
+.page-buttons{
+    text-align:center;
+    margin-top:15px;
+}
+
+/* NEW FEATURES */
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+.feature-btn{
+    background:linear-gradient(135deg,#ff7eb3,#7c5cff);
+    color:white;
+    min-height:52px;
+}
+
+.map-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:9px;
+    margin-top:18px;
+}
+
+.map-node{
+    min-height:55px;
+    padding:8px 4px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#dfe7ff,#c8f7dc);
+    font-size:13px;
+}
+
+.map-node.current{
+    background:linear-gradient(135deg,#ffd166,#ff8fab);
+    transform:scale(1.05);
+}
+
+.map-node.locked{
+    background:#d9d9d9;
+    opacity:.65;
+}
+
+.boss-node{
+    background:linear-gradient(135deg,#ff5f6d,#ffc371)!important;
+    color:#5a1200;
+}
+
+.badge-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.badge{
+    border-radius:18px;
+    padding:14px;
+    background:#eee;
+    opacity:.55;
+}
+
+.badge.unlocked{
+    opacity:1;
+    background:linear-gradient(135deg,#fff3a6,#ffd166);
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+}
+
+.theme-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.theme-btn{
+    min-height:75px;
+    color:#222;
+    border:3px solid transparent;
+}
+
+.theme-btn.selected{
+    border-color:#5b4bd8;
+}
+
+.theme-sky{
+    background:linear-gradient(135deg,#8ee7ff,#b9f7d5,#ffe7a8);
+}
+
+.theme-sunset{
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb);
+}
+
+.theme-ocean{
+    background:linear-gradient(135deg,#74ebd5,#9face6);
+}
+
+.theme-space{
+    background:linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+}
+
+.theme-forest{
+    background:linear-gradient(135deg,#56ab2f,#a8e063);
+}
+
+.boss-banner{
+    display:none;
+    margin:10px 0;
+    padding:12px;
+    border-radius:16px;
+    text-align:center;
+    font-weight:bold;
+    background:linear-gradient(135deg,#ff5f6d,#ffc371);
+}
+
+.boss-banner.active{
+    display:block;
+}
+
+.combo-pop{
+    animation:comboPop .45s ease;
+}
+
+@keyframes comboPop{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.18);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .container{
+        width:96%;
+    }
+
+    .card{
+        padding:15px;
+        border-radius:20px;
+    }
+
+    .game-title{
+        font-size:34px;
+    }
+
+    .game-logo{
+        font-size:60px;
+    }
+
+    .start-card{
+        padding:45px 12px;
+    }
+
+    .rank-grid{
+        grid-template-columns:1fr;
+    }
+
+    .level-grid{
+        grid-template-columns:repeat(4,1fr);
+        gap:7px;
+    }
+
+    .level-btn{
+        font-size:13px;
+        padding:10px 3px;
+        min-height:44px;
+    }
+
+    .question{
+        font-size:20px;
+        min-height:90px;
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+        gap:9px;
+    }
+
+    .answer-btn{
+        min-height:56px;
+        font-size:16px;
+    }
+
+    .shop-item{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .shop-item button{
+        width:100%;
+    }
+
+    .feature-grid,
+    .badge-grid,
+    .theme-grid{
+        grid-template-columns:1fr;
+    }
+
+    .map-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+}
+
+@media(max-width:380px){
+
+    .level-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .question{
+        font-size:18px;
+    }
+
+}
+
+</style>
+
+<script>
+
+/* =====================================================
+   FIRST INSTALL / RESET
+===================================================== */
+
+(function(){
+
+    var freshKey="quiz_medias_playstore_final_v5";
+
+    if(!localStorage.getItem(freshKey)){
+
+        localStorage.setItem(freshKey,"1");
+
+        localStorage.setItem("quiz_coins","0");
+        localStorage.setItem("quiz_medias_fresh_gems","0");
+        localStorage.setItem("quiz_rank_page","0");
+        localStorage.setItem("quiz_current_rank","BROWNS I");
+
+        for(
+            var i=localStorage.length-1;
+            i>=0;
+            i--
+        ){
+
+            var key=localStorage.key(i);
+
+            if(
+                key &&
+                key.indexOf("quiz_unlocked_")===0
+            ){
+
+                localStorage.removeItem(key);
+
+            }
+
+        }
+
+        localStorage.setItem(
+            "quiz_unlocked_browns_i",
+            "1"
+        );
+
+        localStorage.setItem(
+            "quiz_total_answered",
+            "0"
+        );
+
+        localStorage.setItem(
+            "quiz_total_correct",
+            "0"
+        );
+
+        localStorage.setItem(
+            "quiz_best_streak",
+            "0"
+        );
+
+        localStorage.setItem(
+            "quiz_levels_won",
+            "0"
+        );
+
+        localStorage.setItem(
+            "quiz_boss_wins",
+            "0"
+        );
+
+        localStorage.setItem(
+            "quiz_perfect_levels",
+            "0"
+        );
+
+        localStorage.setItem(
+            "quiz_medias_fresh_xp",
+            "0"
+        );
+
+        localStorage.setItem(
+            "quiz_medias_fresh_lives",
+            "3"
+        );
+
+        localStorage.setItem(
+            "quiz_medias_fresh_hints",
+            "3"
+        );
+
+        localStorage.setItem(
+            "quiz_medias_fresh_shields",
+            "0"
+        );
+
+        localStorage.setItem(
+            "quiz_medias_fresh_used_questions",
+            "[]"
+        );
+
+        localStorage.setItem(
+            "quiz_medias_fresh_achievements",
+            "{}"
+        );
+
+        localStorage.setItem(
+            "quiz_daily_streak",
+            "0"
+        );
+
+        localStorage.removeItem(
+            "quiz_daily_last_date"
+        );
+
+        localStorage.removeItem(
+            "quiz_daily_completed_date"
+        );
+
+        localStorage.setItem(
+            "quiz_theme",
+            "sky"
+        );
+
+        localStorage.setItem(
+            "quiz_unlocked_themes",
+            "sky"
+        );
+
+    }
+
+})();
+
+</script>
+
+</head>
+
+<body>
+
+<div class="toys">
+
+    <div class="toy toy1">🧸</div>
+    <div class="toy toy2">🚗</div>
+    <div class="toy toy3">🧩</div>
+    <div class="toy toy4">🚀</div>
+    <div class="toy toy5">🎈</div>
+    <div class="toy toy6">🪀</div>
+    <div class="toy toy7">🎲</div>
+    <div class="toy toy8">🪁</div>
+
+</div>
+
+<div class="container">
+
+<!-- =====================================================
+     START SCREEN
+===================================================== -->
+
+<div id="startScreen" class="screen active">
+
+    <div class="card start-card">
+
+        <div class="game-logo">
+            🧸🎮
+        </div>
+
+        <h1 class="game-title">
+            Quiz Medias
+        </h1>
+
+        <p>
+            🎈 Learn • Play • Win • Rank Up 🎈
+        </p>
+
+        <p>
+            Test your knowledge and become a Champion!
+        </p>
+
+        <button
+            class="main-btn"
+            style="font-size:22px;padding:17px 50px;margin-top:25px;"
+            onclick="startGame()">
+
+            ▶ PLAY
+
+        </button>
+
+        <p class="small" style="text-align:center;margin-top:18px;">
+            v1.0.0
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     HOME SCREEN
+===================================================== -->
+
+<div id="homeScreen" class="screen">
+
+    <div class="card">
+
+        <h1 style="text-align:center;">
+            🧸 Quiz Medias 🎮
+        </h1>
+
+        <p style="text-align:center;">
+            Choose your rank and start playing!
+        </p>
+
+        <div class="stats">
+
+            <div class="stat">
+                🪙 Coins<br>
+                <span id="homeCoins">0</span>
+            </div>
+
+            <div class="stat">
+                💎 Gems<br>
+                <span id="homeGems">0</span>
+            </div>
+
+            <div class="stat">
+                ⭐ XP<br>
+                <span id="homeXP">0</span>
+            </div>
+
+            <div class="stat">
+                🏅 Level<br>
+                <span id="playerLevel">1</span>
+            </div>
+
+        </div>
+
+        <h2 id="pageTitle">
+            Page 1
+        </h2>
+
+        <div class="rank-grid" id="rankGrid"></div>
+
+        <div class="page-buttons">
+
+            <button
+                class="page-btn"
+                id="prevPageBtn"
+                onclick="changeRankPage(-1)">
+
+                ◀ Previous
+
+            </button>
+
+            <button
+                class="page-btn"
+                id="nextPageBtn"
+                onclick="changeRankPage(1)">
+
+                Next ▶
+
+            </button>
+
+        </div>
+
+        <p class="small" style="text-align:center;">
+            🏆 Each rank has 4 stages.
+            Each stage has 50 levels.
+        </p>
+
+        <div class="feature-grid">
+
+            <button class="feature-btn" onclick="openMap()">
+                🗺️ Level Map
+            </button>
+
+            <button class="feature-btn" onclick="openDailyChallenge()">
+                🏆 Daily Challenge
+            </button>
+
+            <button class="feature-btn" onclick="openAchievements()">
+                🏅 Achievements
+            </button>
+
+            <button class="feature-btn" onclick="openStatistics()">
+                📊 Statistics
+            </button>
+
+            <button class="feature-btn" onclick="openThemes()">
+                🎨 Themes
+            </button>
+
+        </div>
+
+        <div style="text-align:center;margin-top:18px;">
+
+            <button
+                class="main-btn"
+                id="musicButton"
+                onclick="toggleMusic()">
+
+                🎵 Music ON
+
+            </button>
+
+            <button
+                class="main-btn"
+                id="voiceToggleButton"
+                onclick="toggleVoice()">
+
+                🔊 Voice ON
+
+            </button>
+
+            <button
+                class="shop-btn"
+                onclick="openShop()">
+
+                🛒 Shop
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LEVEL SCREEN
+===================================================== -->
+
+<div id="levelsScreen" class="screen">
+
+    <div class="card">
+
+        <h1
+            id="rankTitle"
+            style="text-align:center;">
+
+            BROWNS I
+
+        </h1>
+
+        <p style="text-align:center;">
+            Choose a level from 1 to 50
+        </p>
+
+        <div
+            class="level-grid"
+            id="levelGrid">
+        </div>
+
+        <p class="small" style="text-align:center;">
+            🔓 Unlocked through Level
+            <strong id="unlockedDisplay">1</strong>
+        </p>
+
+        <div style="text-align:center;margin-top:15px;">
+
+            <button
+                class="back-btn"
+                onclick="goHome()">
+
+                🏠 Back to Ranks
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     QUIZ SCREEN
+===================================================== -->
+
+<div id="quizScreen" class="screen">
+
+    <div class="card">
+
+        <div class="quiz-top">
+
+            <span id="levelTitle">
+                Level 1
+            </span>
+
+            <span id="questionNumber">
+                Question 1/5
+            </span>
+
+            <span class="timer">
+
+                ⏱️
+                <span id="timer">15</span>
+
+            </span>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                ❤️ Lives<br>
+                <span id="lives">3</span>
+            </div>
+
+            <div class="stat">
+                🪙 Coins<br>
+                <span id="quizCoins">0</span>
+            </div>
+
+            <div class="stat">
+                🔥 Streak<br>
+                <span id="streak">0</span>
+            </div>
+
+        </div>
+
+        <div id="bossBanner" class="boss-banner">
+            👑 BOSS LEVEL!
+        </div>
+
+        <div class="progress-box">
+
+            <div
+                class="progress"
+                id="progressBar">
+            </div>
+
+        </div>
+
+        <div
+            class="question"
+            id="questionText">
+
+            Question
+
+        </div>
+
+        <div style="text-align:center;margin-bottom:15px;">
+
+            <button
+                class="voice-btn"
+                id="voiceButton"
+                onclick="speakCurrentQuestion()">
+
+                🔊 Read Question
+
+            </button>
+
+        </div>
+
+        <div
+            class="answers"
+            id="answers">
+        </div>
+
+        <p id="message"></p>
+
+        <div class="tools">
+
+            <button
+                class="main-btn"
+                onclick="useFiftyFifty()">
+
+                ✂️ 50/50
+                (<span id="hintCount">0</span>)
+
+            </button>
+
+            <button
+                class="main-btn"
+                onclick="useShield()">
+
+                🛡️ Shield
+                (<span id="shieldCount">0</span>)
+
+            </button>
+
+            <br>
+
+            <button onclick="goHome()">
+                🏠 Home
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RESULT SCREEN
+===================================================== -->
+
+<div id="resultScreen" class="screen">
+
+    <div class="card result">
+
+        <h1 id="resultTitle">
+            Level Complete!
+        </h1>
+
+        <h2 id="resultEmoji">
+            🎉
+        </h2>
+
+        <p>
+            Score:
+            <strong id="resultScore">0</strong>/5
+        </p>
+
+        <p>
+            🪙 Coins earned:
+            <strong id="resultCoins">0</strong>
+        </p>
+
+        <p>
+            ⭐ XP earned:
+            <strong id="resultXP">0</strong>
+        </p>
+
+        <div id="nextLevelArea"></div>
+
+        <div
+            id="mysteryBoxArea"
+            style="
+            margin:25px 0;
+            padding:20px;
+            border-radius:25px;
+            background:linear-gradient(135deg,#fff3a6,#ffd166);
+            box-shadow:0 8px 20px rgba(0,0,0,.15);
+            ">
+
+            <h2>
+                🎁 Mystery Box
+            </h2>
+
+            <p>
+                You completed the level!
+                Open your mystery box to get a random reward.
+            </p>
+
+            <button
+                id="mysteryBoxButton"
+                class="shop-btn"
+                onclick="openMysteryBox()"
+                style="
+                font-size:20px;
+                padding:16px 28px;
+                ">
+
+                🎁 OPEN MYSTERY BOX
+
+            </button>
+
+            <div
+                id="mysteryReward"
+                style="
+                display:none;
+                margin-top:15px;
+                padding:15px;
+                border-radius:18px;
+                background:white;
+                font-size:20px;
+                font-weight:bold;
+                ">
+            </div>
+
+        </div>
+
+        <button
+            class="main-btn"
+            onclick="restartLevel()">
+
+            🔁 Play Again
+
+        </button>
+
+        <button onclick="goHome()">
+
+            🏠 Home
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAP
+===================================================== -->
+
+<div id="mapScreen" class="screen">
+
+    <div class="card">
+
+        <h1 style="text-align:center;">
+            🗺️ World / Level Map
+        </h1>
+
+        <p style="text-align:center;">
+            Follow your journey through
+            <strong id="mapRankName">BROWNS I</strong>
+        </p>
+
+        <div id="mapGrid" class="map-grid"></div>
+
+        <p
+            id="mapInfo"
+            class="small"
+            style="text-align:center;">
+        </p>
+
+        <div style="text-align:center;margin-top:15px;">
+
+            <button
+                class="back-btn"
+                onclick="goHome()">
+
+                🏠 Home
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DAILY
+===================================================== -->
+
+<div id="dailyScreen" class="screen">
+
+    <div class="card result">
+
+        <h1>🏆 Daily Challenge</h1>
+
+        <p id="dailyDate"></p>
+
+        <p>
+            🔥 5 difficult questions.
+            Complete all 5 for a big reward!
+        </p>
+
+        <div
+            class="question"
+            id="dailyQuestion">
+            Loading...
+        </div>
+
+        <div
+            id="dailyAnswers"
+            class="answers">
+        </div>
+
+        <p id="dailyMessage"></p>
+
+        <p>
+            🏆 Daily streak:
+            <strong id="dailyStreak">0</strong>
+        </p>
+
+        <button
+            class="back-btn"
+            onclick="goHome()">
+
+            🏠 Home
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ACHIEVEMENTS
+===================================================== -->
+
+<div id="achievementsScreen" class="screen">
+
+    <div class="card">
+
+        <h1 style="text-align:center;">
+            🏅 Achievements
+        </h1>
+
+        <p style="text-align:center;">
+            Collect badges by playing!
+        </p>
+
+        <div
+            id="achievementGrid"
+            class="badge-grid">
+        </div>
+
+        <div style="text-align:center;margin-top:15px;">
+
+            <button
+                class="back-btn"
+                onclick="goHome()">
+
+                🏠 Home
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     STATISTICS
+===================================================== -->
+
+<div id="statisticsScreen" class="screen">
+
+    <div class="card">
+
+        <h1 style="text-align:center;">
+            📊 Player Statistics
+        </h1>
+
+        <div class="stats">
+
+            <div class="stat">
+                ❓ Questions<br>
+                <strong id="statQuestions">0</strong>
+            </div>
+
+            <div class="stat">
+                ✅ Correct<br>
+                <strong id="statCorrect">0</strong>
+            </div>
+
+            <div class="stat">
+                🎯 Accuracy<br>
+                <strong id="statAccuracy">0%</strong>
+            </div>
+
+            <div class="stat">
+                🔥 Best Streak<br>
+                <strong id="statBestStreak">0</strong>
+            </div>
+
+            <div class="stat">
+                🏆 Levels Won<br>
+                <strong id="statLevels">0</strong>
+            </div>
+
+            <div class="stat">
+                👑 Boss Wins<br>
+                <strong id="statBossWins">0</strong>
+            </div>
+
+            <div class="stat">
+                💎 Gems<br>
+                <strong id="statGems">0</strong>
+            </div>
+
+            <div class="stat">
+                ⭐ XP<br>
+                <strong id="statXP">0</strong>
+            </div>
+
+        </div>
+
+        <div style="text-align:center;margin-top:15px;">
+
+            <button
+                class="back-btn"
+                onclick="goHome()">
+
+                🏠 Home
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     THEMES
+===================================================== -->
+
+<div id="themesScreen" class="screen">
+
+    <div class="card">
+
+        <h1 style="text-align:center;">
+            🎨 Unlockable Themes
+        </h1>
+
+        <p style="text-align:center;">
+            Spend coins to unlock new backgrounds.
+        </p>
+
+        <p style="text-align:center;">
+            🪙 Coins:
+            <strong id="themeCoins">0</strong>
+        </p>
+
+        <div
+            id="themeGrid"
+            class="theme-grid">
+        </div>
+
+        <div style="text-align:center;margin-top:15px;">
+
+            <button
+                class="back-btn"
+                onclick="goHome()">
+
+                🏠 Home
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SHOP
+===================================================== -->
+
+<div id="shopScreen" class="screen">
+
+    <div class="card">
+
+        <h1 style="text-align:center;">
+            🛒 Quiz Medias Shop
+        </h1>
+
+        <h2>
+            🪙 Coins:
+            <span id="shopCoins">0</span>
+        </h2>
+
+        <div class="shop-item">
+
+            <div>
+                ❤️ <strong>Extra Life</strong>
+                <br>
+                <span class="small">
+                    Get one extra life for your next game.
+                </span>
+            </div>
+
+            <button onclick="buyLife()">
+                50 🪙
+            </button>
+
+        </div>
+
+        <div class="shop-item">
+
+            <div>
+                ✂️ <strong>50/50 Hint</strong>
+                <br>
+                <span class="small">
+                    Remove two wrong answers.
+                </span>
+            </div>
+
+            <button onclick="buyHint()">
+                30 🪙
+            </button>
+
+        </div>
+
+        <div class="shop-item">
+
+            <div>
+                🛡️ <strong>Shield</strong>
+                <br>
+                <span class="small">
+                    Protect yourself from one wrong answer.
+                </span>
+            </div>
+
+            <button onclick="buyShield()">
+                75 🪙
+            </button>
+
+        </div>
+
+        <div style="text-align:center;">
+
+            <p>
+                ❤️ Extra Lives:
+                <strong id="extraLifeCount">0</strong>
+            </p>
+
+            <p>
+                ✂️ Hints:
+                <strong id="shopHintCount">0</strong>
+            </p>
+
+            <p>
+                🛡️ Shields:
+                <strong id="shopShieldCount">0</strong>
+            </p>
+
+            <button
+                class="main-btn"
+                onclick="goHome()">
+
+                🏠 Back Home
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   ANDROID: HARDWARE BACK BUTTON
+   (only active inside the Capacitor app shell —
+   harmless no-op in a normal desktop/mobile browser)
+===================================================== */
+
+var lastBackPressTime=0;
+
+function handleAndroidBack(){
+
+    var homeVisible=
+        document.getElementById(
+            "homeScreen"
+        ).classList.contains(
+            "active"
+        );
+
+    var startVisible=
+        document.getElementById(
+            "startScreen"
+        ).classList.contains(
+            "active"
+        );
+
+    if(startVisible){
+
+        return;
+
+    }
+
+    if(homeVisible){
+
+        var now=Date.now();
+
+        if(now-lastBackPressTime<2000){
+
+            navigator.app &&
+                navigator.app.exitApp &&
+                navigator.app.exitApp();
+
+            if(
+                window.Capacitor &&
+                window.Capacitor.Plugins &&
+                window.Capacitor.Plugins.App
+            ){
+
+                window.Capacitor.Plugins.App.exitApp();
+
+            }
+
+        }else{
+
+            lastBackPressTime=now;
+
+            var msg=
+                document.createElement(
+                    "div"
+                );
+
+            msg.textContent=
+                "Press back again to exit";
+
+            msg.style.cssText=
+                "position:fixed;bottom:30px;left:50%;"+
+                "transform:translateX(-50%);"+
+                "background:rgba(0,0,0,.75);color:#fff;"+
+                "padding:10px 18px;border-radius:20px;"+
+                "z-index:9999;font-size:14px;";
+
+            document.body.appendChild(msg);
+
+            setTimeout(
+                function(){
+                    msg.remove();
+                },
+                1800
+            );
+
+        }
+
+    }else{
+
+        goHome();
+
+    }
+
+}
+
+if(
+    window.Capacitor &&
+    window.Capacitor.Plugins &&
+    window.Capacitor.Plugins.App
+){
+
+    window.Capacitor.Plugins.App.addListener(
+        "backButton",
+        handleAndroidBack
+    );
+
+}
+
+/* Optional: tint the Android status bar to match the game
+   theme. No-op if the @capacitor/status-bar plugin isn't
+   installed - safe to leave in either way. */
+
+if(
+    window.Capacitor &&
+    window.Capacitor.Plugins &&
+    window.Capacitor.Plugins.StatusBar
+){
+
+    try{
+
+        window.Capacitor.Plugins.StatusBar.setBackgroundColor(
+            {color:"#8ee7ff"}
+        );
+
+    }catch(e){}
+
+}
+
+
+/* =====================================================
+   QUESTION BANK
+===================================================== */
+
+var questionPool=[
+
+{
+q:"Which animal is known as man's best friend?",
+a:["Dog","Cat","Horse","Cow"],
+correct:0
+},
+
+{
+q:"What gives us light during the daytime?",
+a:["Moon","Sun","Stars","Cloud"],
+correct:1
+},
+
+{
+q:"Where do fish live?",
+a:["Water","Trees","Desert","Sky"],
+correct:0
+},
+
+{
+q:"Which fruit is usually red or green and grows on trees?",
+a:["Apple","Banana","Watermelon","Carrot"],
+correct:0
+},
+
+{
+q:"Which animal says meow?",
+a:["Dog","Cat","Lion","Cow"],
+correct:1
+},
+
+{
+q:"Which animal is called the king of the jungle?",
+a:["Tiger","Lion","Elephant","Bear"],
+correct:1
+},
+
+{
+q:"How many colours are commonly seen in a rainbow?",
+a:["5","6","7","8"],
+correct:2
+},
+
+{
+q:"Which is the largest land animal?",
+a:["Elephant","Horse","Lion","Giraffe"],
+correct:0
+},
+
+{
+q:"What do we see in the night sky?",
+a:["Moon","Sun","Rainbow","Cloud only"],
+correct:0
+},
+
+{
+q:"Which animal gives us milk?",
+a:["Cow","Lion","Tiger","Snake"],
+correct:0
+},
+
+{
+q:"Which planet do we live on?",
+a:["Mars","Earth","Venus","Jupiter"],
+correct:1
+},
+
+{
+q:"Which insect makes honey?",
+a:["Ant","Bee","Butterfly","Fly"],
+correct:1
+},
+
+{
+q:"Which part of a plant is usually underground?",
+a:["Flower","Leaf","Root","Fruit"],
+correct:2
+},
+
+{
+q:"A caterpillar changes into what?",
+a:["Butterfly","Fish","Bird","Dog"],
+correct:0
+},
+
+{
+q:"Which animal has long ears?",
+a:["Rabbit","Tiger","Elephant","Fish"],
+correct:0
+},
+
+{
+q:"Which planet is known as the Red Planet?",
+a:["Mars","Earth","Saturn","Venus"],
+correct:0
+},
+
+{
+q:"What is the name of the star closest to Earth?",
+a:["Moon","Sun","Mars","Sirius"],
+correct:1
+},
+
+{
+q:"Which planet is famous for its beautiful rings?",
+a:["Saturn","Earth","Mars","Mercury"],
+correct:0
+},
+
+{
+q:"What is Earth's natural satellite?",
+a:["Sun","Moon","Mars","Venus"],
+correct:1
+},
+
+{
+q:"What is used to travel into space?",
+a:["Rocket","Bicycle","Boat","Bus"],
+correct:0
+},
+
+{
+q:"Which organ helps us breathe?",
+a:["Lungs","Heart","Brain","Stomach"],
+correct:0
+},
+
+{
+q:"Which organ pumps blood around our body?",
+a:["Lungs","Heart","Brain","Eye"],
+correct:1
+},
+
+{
+q:"What gives our body support?",
+a:["Bones","Hair","Nails","Skin"],
+correct:0
+},
+
+{
+q:"Which organ helps us see?",
+a:["Ear","Eye","Nose","Tongue"],
+correct:1
+},
+
+{
+q:"Which organ helps us hear?",
+a:["Eye","Ear","Nose","Hand"],
+correct:1
+},
+
+{
+q:"What is the capital of India?",
+a:["Mumbai","New Delhi","Chennai","Kolkata"],
+correct:1
+},
+
+{
+q:"What is the national animal of India?",
+a:["Lion","Tiger","Elephant","Peacock"],
+correct:1
+},
+
+{
+q:"What is the national bird of India?",
+a:["Peacock","Parrot","Eagle","Crow"],
+correct:0
+},
+
+{
+q:"What is the national flower of India?",
+a:["Rose","Lotus","Sunflower","Jasmine"],
+correct:1
+},
+
+{
+q:"Which fruit is known as the king of fruits in India?",
+a:["Apple","Mango","Banana","Orange"],
+correct:1
+},
+
+{
+q:"What do plants need to make food?",
+a:["Sunlight","Plastic","Metal","Shoes"],
+correct:0
+},
+
+{
+q:"Which is important for plants to grow?",
+a:["Water","Glass","Plastic","Paper"],
+correct:0
+},
+
+{
+q:"Which gas do plants release during photosynthesis?",
+a:["Oxygen","Smoke","Helium","Steam"],
+correct:0
+},
+
+{
+q:"What falls from clouds as rain?",
+a:["Water","Sand","Fire","Rocks"],
+correct:0
+},
+
+{
+q:"What happens to water when it freezes?",
+a:["It becomes ice","It becomes fire","It disappears","It becomes air"],
+correct:0
+},
+
+{
+q:"Which organ controls most activities of the body?",
+a:["Brain","Heart","Lung","Hand"],
+correct:0
+},
+
+{
+q:"Which instrument measures temperature?",
+a:["Thermometer","Ruler","Clock","Compass"],
+correct:0
+},
+
+{
+q:"Which gas do humans need to breathe?",
+a:["Oxygen","Carbon dioxide","Helium","Smoke"],
+correct:0
+},
+
+{
+q:"Which is the largest ocean?",
+a:["Pacific Ocean","Indian Ocean","Arctic Ocean","Atlantic Ocean"],
+correct:0
+},
+
+{
+q:"Which is the highest mountain above sea level?",
+a:["Mount Everest","Mount Fuji","K2","Alps"],
+correct:0
+},
+
+{
+q:"Which device is mainly used for typing?",
+a:["Keyboard","Mouse","Speaker","Monitor"],
+correct:0
+},
+
+{
+q:"Which device is used to move the pointer on a computer?",
+a:["Mouse","Keyboard","Printer","Speaker"],
+correct:0
+},
+
+{
+q:"Which device can be used to make phone calls?",
+a:["Mobile phone","Television","Printer","Keyboard"],
+correct:0
+},
+
+{
+q:"What do we use to visit websites?",
+a:["Internet","Pencil","Book","Chair"],
+correct:0
+},
+
+{
+q:"Which is important for keeping an online account safe?",
+a:["Strong password","Sharing password","Easy password","No password"],
+correct:0
+},
+
+{
+q:"What should you do when you make a mistake?",
+a:["Learn from it","Give up","Hide it","Blame others"],
+correct:0
+},
+
+{
+q:"What should you do if your friend needs help?",
+a:["Help them","Laugh at them","Ignore them","Run away"],
+correct:0
+},
+
+{
+q:"Why should we study?",
+a:["To learn","To forget","To waste time","To sleep"],
+correct:0
+},
+
+{
+q:"Which is a good quality?",
+a:["Kindness","Rudeness","Laziness","Cheating"],
+correct:0
+},
+
+{
+q:"Which shape has three sides?",
+a:["Triangle","Square","Circle","Rectangle"],
+correct:0
+},
+
+{
+q:"Which shape has four equal sides?",
+a:["Triangle","Square","Circle","Oval"],
+correct:1
+},
+
+{
+q:"Which animal is known for having a long trunk?",
+a:["Elephant","Tiger","Rabbit","Dog"],
+correct:0
+},
+
+{
+q:"Which bird is famous for its colourful tail feathers?",
+a:["Peacock","Crow","Sparrow","Pigeon"],
+correct:0
+},
+
+{
+q:"Which animal can often be found in a hive?",
+a:["Bee","Lion","Horse","Whale"],
+correct:0
+},
+
+{
+q:"What do we use to smell?",
+a:["Nose","Ear","Eye","Hand"],
+correct:0
+},
+
+{
+q:"What do we use to taste food?",
+a:["Tongue","Ear","Eye","Foot"],
+correct:0
+},
+
+{
+q:"What do we use to see?",
+a:["Eye","Nose","Ear","Hand"],
+correct:0
+},
+
+{
+q:"What do we use to hear?",
+a:["Ear","Eye","Nose","Mouth"],
+correct:0
+},
+
+{
+q:"Which season is usually the coldest?",
+a:["Winter","Summer","Spring","Autumn"],
+correct:0
+},
+
+{
+q:"Which season is usually the hottest?",
+a:["Winter","Summer","Spring","Autumn"],
+correct:1
+},
+
+{
+q:"What do bees collect from flowers?",
+a:["Nectar","Sand","Milk","Salt"],
+correct:0
+},
+
+{
+q:"Which part of a plant is usually green and makes food?",
+a:["Leaf","Root","Seed","Bark"],
+correct:0
+},
+
+{
+q:"What do seeds grow into?",
+a:["Plants","Rocks","Clouds","Shoes"],
+correct:0
+},
+
+{
+q:"Which natural object gives Earth heat and light?",
+a:["Sun","Moon","Cloud","Starfish"],
+correct:0
+},
+
+{
+q:"What is frozen water called?",
+a:["Ice","Steam","Rain","Mist"],
+correct:0
+},
+
+{
+q:"What is water vapour?",
+a:["Water in gas form","Ice","Sand","Rock"],
+correct:0
+},
+
+{
+q:"Which planet is the largest in our solar system?",
+a:["Jupiter","Mars","Earth","Mercury"],
+correct:0
+},
+
+{
+q:"Which planet is closest to the Sun?",
+a:["Mercury","Earth","Mars","Neptune"],
+correct:0
+},
+
+{
+q:"Which planet is known for its rings and is a gas giant?",
+a:["Saturn","Mercury","Earth","Mars"],
+correct:0
+},
+
+{
+q:"What is the name of our galaxy?",
+a:["Milky Way","Blue Way","Solar Road","Star Ring"],
+correct:0
+},
+
+{
+q:"Which tool is used to measure length?",
+a:["Ruler","Thermometer","Clock","Compass"],
+correct:0
+},
+
+{
+q:"Which instrument tells us time?",
+a:["Clock","Ruler","Thermometer","Scale"],
+correct:0
+},
+
+{
+q:"Which object is used to write on paper?",
+a:["Pencil","Plate","Shoe","Cup"],
+correct:0
+},
+
+{
+q:"Which device shows pictures and videos from a computer?",
+a:["Monitor","Keyboard","Mouse","Printer"],
+correct:0
+},
+
+{
+q:"Which device prints words or pictures onto paper?",
+a:["Printer","Mouse","Speaker","Keyboard"],
+correct:0
+},
+
+{
+q:"What should you do before crossing a road?",
+a:["Look both ways","Run quickly","Close your eyes","Play"],
+correct:0
+},
+
+{
+q:"What does a red traffic light mean?",
+a:["Stop","Go","Run","Turn off the road"],
+correct:0
+},
+
+{
+q:"What does a green traffic light usually mean?",
+a:["Go","Stop","Sleep","Wait forever"],
+correct:0
+},
+
+{
+q:"Which vehicle travels on railway tracks?",
+a:["Train","Car","Boat","Bicycle"],
+correct:0
+},
+
+{
+q:"Which vehicle travels on water?",
+a:["Boat","Bus","Train","Bicycle"],
+correct:0
+},
+
+{
+q:"Which vehicle flies in the sky?",
+a:["Aeroplane","Boat","Train","Car"],
+correct:0
+},
+
+{
+q:"Which is a source of clean energy from the Sun?",
+a:["Solar energy","Plastic","Coal dust","Smoke"],
+correct:0
+},
+
+{
+q:"Which natural event includes lightning and thunder?",
+a:["Thunderstorm","Snowfall","Eclipse","Rainbow"],
+correct:0
+},
+
+{
+q:"What do we call water falling from clouds?",
+a:["Rain","Smoke","Dust","Fire"],
+correct:0
+},
+
+{
+q:"Which material is commonly used to make windows because it is transparent?",
+a:["Glass","Wood","Stone","Cloth"],
+correct:0
+},
+
+{
+q:"Which sense helps us feel hot or cold?",
+a:["Touch","Taste","Sight","Hearing"],
+correct:0
+},
+
+{
+q:"Which is a healthy habit?",
+a:["Washing hands","Never bathing","Sharing germs","Eating only sweets"],
+correct:0
+},
+
+{
+q:"What is the opposite of hot?",
+a:["Cold","Tall","Fast","Bright"],
+correct:0
+},
+
+{
+q:"What is the opposite of day?",
+a:["Night","Light","Sun","Morning"],
+correct:0
+}
+
+];
+
+
+/* =====================================================
+   ADVANCED QUESTIONS
+===================================================== */
+
+var advancedQuestionPool=[
+
+{
+q:"Which process do green plants use to make food using sunlight?",
+a:["Respiration","Photosynthesis","Digestion","Transpiration"],
+correct:1
+},
+
+{
+q:"Which gas is taken in by plants during photosynthesis?",
+a:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],
+correct:2
+},
+
+{
+q:"Which blood cells mainly help the body fight infections?",
+a:["Red blood cells","White blood cells","Platelets","Plasma"],
+correct:1
+},
+
+{
+q:"Which organ removes many waste products from the blood?",
+a:["Kidney","Heart","Lung","Stomach"],
+correct:0
+},
+
+{
+q:"What is the basic unit of life?",
+a:["Tissue","Organ","Cell","Bone"],
+correct:2
+},
+
+{
+q:"Which force pulls objects toward Earth?",
+a:["Friction","Gravity","Magnetism","Buoyancy"],
+correct:1
+},
+
+{
+q:"Which form of energy is stored in food?",
+a:["Chemical energy","Sound energy","Light energy","Nuclear energy"],
+correct:0
+},
+
+{
+q:"Which simple machine is a seesaw an example of?",
+a:["Lever","Pulley","Wheel and axle","Screw"],
+correct:0
+},
+
+{
+q:"Which change of state turns a liquid into a gas?",
+a:["Freezing","Melting","Evaporation","Condensation"],
+correct:2
+},
+
+{
+q:"What causes day and night on Earth?",
+a:["Earth's rotation","Earth's revolution","Moon's rotation","Cloud movement"],
+correct:0
+},
+
+{
+q:"Which instrument is used to measure air pressure?",
+a:["Barometer","Thermometer","Hygrometer","Ammeter"],
+correct:0
+},
+
+{
+q:"Which gas is most abundant in Earth's atmosphere?",
+a:["Oxygen","Nitrogen","Carbon dioxide","Argon"],
+correct:1
+},
+
+{
+q:"Which law states that every action has an equal and opposite reaction?",
+a:["Newton's first law","Newton's second law","Newton's third law","Law of conservation of mass"],
+correct:2
+},
+
+{
+q:"Which quantity has both magnitude and direction?",
+a:["Scalar","Vector","Temperature","Mass"],
+correct:1
+},
+
+{
+q:"Which is a scalar quantity?",
+a:["Velocity","Displacement","Speed","Force"],
+correct:2
+},
+
+{
+q:"Which circuit component measures electric current?",
+a:["Ammeter","Voltmeter","Thermometer","Barometer"],
+correct:0
+},
+
+{
+q:"Which circuit component is connected in parallel to measure potential difference?",
+a:["Voltmeter","Ammeter","Fuse","Switch"],
+correct:0
+},
+
+{
+q:"Why do astronauts appear weightless while orbiting Earth?",
+a:["They are in continuous free fall","There is no gravity","Their mass becomes zero","Gravity is turned off"],
+correct:0
+}
+
+];
+
+
+/* =====================================================
+   RANKS
+===================================================== */
+
+var rankPages=[
+
+[
+{
+name:"BROWNS",
+stages:[
+"BROWNS I",
+"BROWNS II",
+"BROWNS III",
+"BROWNS IV"
+]
+},
+
+{
+name:"GOLD",
+stages:[
+"GOLD I",
+"GOLD II",
+"GOLD III",
+"GOLD IV"
+]
+},
+
+{
+name:"SILVER",
+stages:[
+"SILVER I",
+"SILVER II",
+"SILVER III",
+"SILVER IV"
+]
+}
+],
+
+[
+{
+name:"PLATINUM",
+stages:[
+"PLATINUM I",
+"PLATINUM II",
+"PLATINUM III",
+"PLATINUM IV"
+]
+},
+
+{
+name:"HERO",
+stages:[
+"HERO I",
+"HERO II",
+"HERO III",
+"HERO IV"
+]
+},
+
+{
+name:"MASTER",
+stages:[
+"MASTER I",
+"MASTER II",
+"MASTER III",
+"MASTER IV"
+]
+}
+],
+
+[
+{
+name:"GRANDMASTER",
+stages:[
+"GRANDMASTER I",
+"GRANDMASTER II",
+"GRANDMASTER III",
+"GRANDMASTER IV"
+]
+},
+
+{
+name:"ELITE MASTER",
+stages:[
+"ELITE MASTER I",
+"ELITE MASTER II",
+"ELITE MASTER III",
+"ELITE MASTER IV"
+]
+},
+
+{
+name:"HACKER",
+stages:[
+"HACKER I",
+"HACKER II",
+"HACKER III",
+"HACKER IV"
+]
+}
+],
+
+[
+{
+name:"PRO HACKER",
+stages:[
+"PRO HACKER I",
+"PRO HACKER II",
+"PRO HACKER III",
+"PRO HACKER IV"
+]
+},
+
+{
+name:"ULTIMATE PRO",
+stages:[
+"ULTIMATE PRO I",
+"ULTIMATE PRO II",
+"ULTIMATE PRO III",
+"ULTIMATE PRO IV"
+]
+},
+
+{
+name:"MYSTERY KILLER",
+stages:[
+"MYSTERY KILLER I",
+"MYSTERY KILLER II",
+"MYSTERY KILLER III",
+"MYSTERY KILLER IV"
+]
+}
+
+]
+
+];
+
+var allRanks=[];
+
+for(var rp=0;rp<rankPages.length;rp++){
+
+    for(var rr=0;rr<rankPages[rp].length;rr++){
+
+        for(
+            var rs=0;
+            rs<rankPages[rp][rr].stages.length;
+            rs++
+        ){
+
+            allRanks.push(
+                rankPages[rp][rr].stages[rs]
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+var LEVELS_PER_RANK=50;
+
+var QUESTIONS_PER_LEVEL=5;
+
+
+/* =====================================================
+   SAFE STORAGE
+===================================================== */
+
+function getNumber(key,defaultValue){
+
+    var value=localStorage.getItem(key);
+
+    if(value===null){
+        return defaultValue;
+    }
+
+    var number=Number(value);
+
+    if(isNaN(number)){
+        return defaultValue;
+    }
+
+    return number;
+
+}
+
+
+/* =====================================================
+   SAVED DATA
+===================================================== */
+
+var coins=getNumber("quiz_coins",0);
+
+var gems=getNumber(
+    "quiz_medias_fresh_gems",
+    0
+);
+
+var xp=getNumber(
+    "quiz_medias_fresh_xp",
+    0
+);
+
+var extraLives=getNumber(
+    "quiz_extra_lives",
+    0
+);
+
+var hints=getNumber(
+    "quiz_medias_fresh_hints",
+    3
+);
+
+var shields=getNumber(
+    "quiz_medias_fresh_shields",
+    0
+);
+
+var rankPage=getNumber(
+    "quiz_rank_page",
+    0
+);
+
+var currentRank=
+    localStorage.getItem(
+        "quiz_current_rank"
+    ) || "BROWNS I";
+
+
+/* =====================================================
+   GAME VARIABLES
+===================================================== */
+
+var currentLevel=1;
+
+var currentQuestion=0;
+
+var score=0;
+
+var lives=3;
+
+var streak=0;
+
+var timeLeft=15;
+
+var timer=null;
+
+var answered=false;
+
+var mistakeCount=0;
+
+var hintUsed=false;
+
+var shieldActive=false;
+
+var voiceEnabled=true;
+
+var musicOn=true;
+
+var currentLevelQuestions=[];
+
+var suddenDeathOn=false;
+
+var totalAnswered=getNumber(
+    "quiz_total_answered",
+    0
+);
+
+var totalCorrect=getNumber(
+    "quiz_total_correct",
+    0
+);
+
+var bestStreak=getNumber(
+    "quiz_best_streak",
+    0
+);
+
+var levelsWon=getNumber(
+    "quiz_levels_won",
+    0
+);
+
+var bossWins=getNumber(
+    "quiz_boss_wins",
+    0
+);
+
+var perfectLevels=getNumber(
+    "quiz_perfect_levels",
+    0
+);
+
+var dailyStreak=getNumber(
+    "quiz_daily_streak",
+    0
+);
+
+var dailyLastDate=
+    localStorage.getItem(
+        "quiz_daily_last_date"
+    ) || "";
+
+var dailyCompletedDate=
+    localStorage.getItem(
+        "quiz_daily_completed_date"
+    ) || "";
+
+var selectedTheme=
+    localStorage.getItem(
+        "quiz_theme"
+    ) || "sky";
+
+var unlockedThemes=
+    (
+        localStorage.getItem(
+            "quiz_unlocked_themes"
+        ) || "sky"
+    )
+    .split(",")
+    .filter(Boolean);
+
+var achievements={};
+
+try{
+
+    achievements=JSON.parse(
+        localStorage.getItem(
+            "quiz_medias_fresh_achievements"
+        ) || "{}"
+    );
+
+}catch(e){
+
+    achievements={};
+
+}
+
+var dailyQuestion=null;
+
+var dailyAnswered=false;
+
+var mysteryBoxOpened=false;
+
+
+/* =====================================================
+   SAVE DATA
+===================================================== */
+
+function saveData(){
+
+    localStorage.setItem(
+        "quiz_coins",
+        String(coins)
+    );
+
+    localStorage.setItem(
+        "quiz_medias_fresh_gems",
+        String(gems)
+    );
+
+    localStorage.setItem(
+        "quiz_medias_fresh_xp",
+        String(xp)
+    );
+
+    localStorage.setItem(
+        "quiz_extra_lives",
+        String(extraLives)
+    );
+
+    localStorage.setItem(
+        "quiz_medias_fresh_hints",
+        String(hints)
+    );
+
+    localStorage.setItem(
+        "quiz_medias_fresh_shields",
+        String(shields)
+    );
+
+    localStorage.setItem(
+        "quiz_rank_page",
+        String(rankPage)
+    );
+
+    localStorage.setItem(
+        "quiz_current_rank",
+        currentRank
+    );
+
+    localStorage.setItem(
+        "quiz_total_answered",
+        String(totalAnswered)
+    );
+
+    localStorage.setItem(
+        "quiz_total_correct",
+        String(totalCorrect)
+    );
+
+    localStorage.setItem(
+        "quiz_best_streak",
+        String(bestStreak)
+    );
+
+    localStorage.setItem(
+        "quiz_levels_won",
+        String(levelsWon)
+    );
+
+    localStorage.setItem(
+        "quiz_boss_wins",
+        String(bossWins)
+    );
+
+    localStorage.setItem(
+        "quiz_perfect_levels",
+        String(perfectLevels)
+    );
+
+    localStorage.setItem(
+        "quiz_daily_streak",
+        String(dailyStreak)
+    );
+
+    localStorage.setItem(
+        "quiz_daily_last_date",
+        dailyLastDate
+    );
+
+    localStorage.setItem(
+        "quiz_daily_completed_date",
+        dailyCompletedDate
+    );
+
+    localStorage.setItem(
+        "quiz_sudden_death",
+        String(suddenDeathOn)
+    );
+
+    localStorage.setItem(
+        "quiz_theme",
+        selectedTheme
+    );
+
+    localStorage.setItem(
+        "quiz_unlocked_themes",
+        unlockedThemes.join(",")
+    );
+
+    localStorage.setItem(
+        "quiz_medias_fresh_achievements",
+        JSON.stringify(achievements)
+    );
+
+}
+
+
+/* =====================================================
+   RANK STORAGE
+===================================================== */
+
+function getRankKey(rank){
+
+    return rank
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g,"_");
+
+}
+
+function getRankUnlocked(rank){
+
+    return getNumber(
+        "quiz_unlocked_"+getRankKey(rank),
+        0
+    );
+
+}
+
+function setRankUnlocked(rank,level){
+
+    localStorage.setItem(
+        "quiz_unlocked_"+getRankKey(rank),
+        String(level)
+    );
+
+}
+
+function getRankIndex(rank){
+
+    return allRanks.indexOf(rank);
+
+}
+
+
+/* =====================================================
+   DIFFICULTY
+===================================================== */
+
+function getDifficulty(level){
+
+    if(level<=10){
+        return "Easy";
+    }
+
+    if(level<=20){
+        return "Medium";
+    }
+
+    if(level<=35){
+        return "Hard";
+    }
+
+    if(level<=45){
+        return "Very Hard";
+    }
+
+    return "Expert";
+
+}
+
+function isBossLevel(level){
+
+    return level%10===0;
+
+}
+
+function getLevelTime(level){
+
+    if(isBossLevel(level)){
+        return 8;
+    }
+
+    if(level<=10){
+        return 15;
+    }
+
+    if(level<=20){
+        return 14;
+    }
+
+    if(level<=35){
+        return 13;
+    }
+
+    if(level<=45){
+        return 12;
+    }
+
+    return 11;
+
+}
+
+
+/* =====================================================
+   QUESTIONS
+===================================================== */
+
+function getAllQuestions(){
+
+    return questionPool.concat(
+        advancedQuestionPool
+    );
+
+}
+
+function getUsedQuestions(){
+
+    var used=[];
+
+    try{
+
+        var saved=
+            localStorage.getItem(
+                "quiz_medias_fresh_used_questions"
+            );
+
+        if(saved){
+            used=JSON.parse(saved);
+        }
+
+        if(!Array.isArray(used)){
+            used=[];
+        }
+
+    }catch(e){
+
+        used=[];
+
+    }
+
+    return used;
+
+}
+
+function saveUsedQuestions(used){
+
+    localStorage.setItem(
+        "quiz_medias_fresh_used_questions",
+        JSON.stringify(used)
+    );
+
+}
+
+function shuffleArray(array){
+
+    for(
+        var i=array.length-1;
+        i>0;
+        i--
+    ){
+
+        var j=Math.floor(
+            Math.random()*(i+1)
+        );
+
+        var temp=array[i];
+
+        array[i]=array[j];
+
+        array[j]=temp;
+
+    }
+
+    return array;
+
+}
+
+
+/* =====================================================
+   RANDOM ANSWER ORDER
+===================================================== */
+
+function shuffleQuestionOptions(question){
+
+    var options=[];
+
+    for(
+        var i=0;
+        i<question.a.length;
+        i++
+    ){
+
+        options.push({
+
+            text:question.a[i],
+
+            isCorrect:
+                i===question.correct
+
+        });
+
+    }
+
+    shuffleArray(options);
+
+    var newAnswers=[];
+
+    var newCorrect=0;
+
+    for(
+        var j=0;
+        j<options.length;
+        j++
+    ){
+
+        newAnswers.push(
+            options[j].text
+        );
+
+        if(options[j].isCorrect){
+            newCorrect=j;
+        }
+
+    }
+
+    return {
+
+        q:question.q,
+
+        a:newAnswers,
+
+        correct:newCorrect
+
+    };
+
+}
+
+
+/* =====================================================
+   GET LEVEL QUESTIONS
+===================================================== */
+
+function getLevelQuestions(level){
+
+    var pool=getAllQuestions();
+
+    var used=getUsedQuestions();
+
+    var cleanUsed=[];
+
+    for(
+        var i=0;
+        i<used.length;
+        i++
+    ){
+
+        if(
+            cleanUsed.indexOf(used[i])===-1
+        ){
+
+            cleanUsed.push(
+                used[i]
+            );
+
+        }
+
+    }
+
+    used=cleanUsed;
+
+    var available=[];
+
+    for(
+        var p=0;
+        p<pool.length;
+        p++
+    ){
+
+        if(
+            used.indexOf(pool[p].q)===-1
+        ){
+
+            available.push(
+                pool[p]
+            );
+
+        }
+
+    }
+
+    if(
+        available.length<
+        QUESTIONS_PER_LEVEL
+    ){
+
+        used=[];
+
+        available=pool.slice();
+
+    }
+
+    shuffleArray(available);
+
+    var result=[];
+
+    for(
+        var q=0;
+        q<QUESTIONS_PER_LEVEL;
+        q++
+    ){
+
+        var selected=available[q];
+
+        var shuffled=
+            shuffleQuestionOptions(
+                selected
+            );
+
+        result.push(shuffled);
+
+        used.push(selected.q);
+
+    }
+
+    saveUsedQuestions(used);
+
+    return result;
+
+}
+
+
+/* =====================================================
+   AUDIO
+===================================================== */
+
+var audioCtx=null;
+
+var musicTimer=null;
+
+var melody=[
+    262,330,392,330,
+    294,349,440,349
+];
+
+var melodyIndex=0;
+
+function initAudio(){
+
+    try{
+
+        var AudioClass=
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if(!AudioClass){
+            return false;
+        }
+
+        if(!audioCtx){
+            audioCtx=new AudioClass();
+        }
+
+        if(
+            audioCtx.state==="suspended"
+        ){
+
+            audioCtx.resume();
+
+        }
+
+        return true;
+
+    }catch(e){
+
+        return false;
+
+    }
+
+}
+
+function tone(
+    frequency,
+    duration,
+    type,
+    volume
+){
+
+    if(!musicOn){
+        return;
+    }
+
+    if(!initAudio()){
+        return;
+    }
+
+    try{
+
+        var oscillator=
+            audioCtx.createOscillator();
+
+        var gain=
+            audioCtx.createGain();
+
+        oscillator.type=
+            type || "sine";
+
+        oscillator.frequency.value=
+            frequency;
+
+        gain.gain.setValueAtTime(
+            volume || .05,
+            audioCtx.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            audioCtx.currentTime+duration
+        );
+
+        oscillator.connect(gain);
+
+        gain.connect(
+            audioCtx.destination
+        );
+
+        oscillator.start();
+
+        oscillator.stop(
+            audioCtx.currentTime+duration
+        );
+
+    }catch(e){}
+
+}
+
+function correctSound(){
+
+    tone(660,.12,"sine",.08);
+
+    setTimeout(
+        function(){
+            tone(880,.16,"sine",.08);
+        },
+        100
+    );
+
+}
+
+function wrongSound(){
+
+    tone(
+        180,
+        .2,
+        "sawtooth",
+        .06
+    );
+
+}
+
+function clickSound(){
+
+    tone(
+        420,
+        .06,
+        "square",
+        .035
+    );
+
+}
+
+function winSound(){
+
+    tone(
+        523,
+        .12,
+        "sine",
+        .06
+    );
+
+    setTimeout(
+        function(){
+            tone(
+                659,
+                .12,
+                "sine",
+                .06
+            );
+        },
+        120
+    );
+
+    setTimeout(
+        function(){
+            tone(
+                784,
+                .25,
+                "sine",
+                .06
+            );
+        },
+        240
+    );
+
+}
+
+function bossSound(){
+
+    if(!musicOn){
+        return;
+    }
+
+    tone(
+        196,
+        .12,
+        "sawtooth",
+        .05
+    );
+
+    setTimeout(
+        function(){
+            tone(
+                247,
+                .12,
+                "sawtooth",
+                .05
+            );
+        },
+        130
+    );
+
+    setTimeout(
+        function(){
+            tone(
+                330,
+                .22,
+                "square",
+                .06
+            );
+        },
+        260
+    );
+
+}
+
+function dailySound(){
+
+    tone(
+        784,
+        .12,
+        "sine",
+        .07
+    );
+
+    setTimeout(
+        function(){
+            tone(
+                988,
+                .18,
+                "sine",
+                .07
+            );
+        },
+        120
+    );
+
+}
+
+function startMusic(){
+
+    if(!musicOn){
+        return;
+    }
+
+    if(musicTimer){
+        return;
+    }
+
+    if(!initAudio()){
+        return;
+    }
+
+    musicTimer=setInterval(
+        function(){
+
+            tone(
+                melody[melodyIndex],
+                .25,
+                "triangle",
+                .018
+            );
+
+            melodyIndex++;
+
+            if(
+                melodyIndex>=melody.length
+            ){
+
+                melodyIndex=0;
+
+            }
+
+        },
+        550
+    );
+
+}
+
+function stopMusic(){
+
+    if(musicTimer){
+
+        clearInterval(
+            musicTimer
+        );
+
+        musicTimer=null;
+
+    }
+
+}
+
+function toggleMusic(){
+
+    musicOn=!musicOn;
+
+    if(musicOn){
+
+        initAudio();
+
+        startMusic();
+
+    }else{
+
+        stopMusic();
+
+    }
+
+    var button=
+        document.getElementById(
+            "musicButton"
+        );
+
+    if(button){
+
+        button.textContent=
+            musicOn
+            ?"🎵 Music ON"
+            :"🔇 Music OFF";
+
+    }
+
+}
+
+
+/* =====================================================
+   VOICE
+===================================================== */
+
+function canUseVoice(){
+
+    return(
+        "speechSynthesis" in window &&
+        typeof SpeechSynthesisUtterance!=="undefined"
+    );
+
+}
+
+/* Preload voices - on Android WebViews the voice list is
+   often empty on the very first speak() call because it
+   loads asynchronously. Calling getVoices() once up front
+   (and again when the list becomes available) avoids a
+   silent failure on the first "Read Question" tap. */
+
+if(canUseVoice()){
+
+    window.speechSynthesis.getVoices();
+
+    if(
+        "onvoiceschanged" in
+        window.speechSynthesis
+    ){
+
+        window.speechSynthesis.onvoiceschanged=
+            function(){
+
+                window.speechSynthesis.getVoices();
+
+            };
+
+    }
+
+}
+
+function speakText(text){
+
+    if(!voiceEnabled){
+        return;
+    }
+
+    if(!canUseVoice()){
+        return;
+    }
+
+    try{
+
+        window.speechSynthesis.cancel();
+
+        var speech=
+            new SpeechSynthesisUtterance(
+                text
+            );
+
+        speech.lang="en-IN";
+        speech.rate=.9;
+        speech.pitch=1;
+        speech.volume=1;
+
+        var button=
+            document.getElementById(
+                "voiceButton"
+            );
+
+        if(button){
+
+            button.classList.add(
+                "speaking"
+            );
+
+        }
+
+        speech.onend=function(){
+
+            if(button){
+
+                button.classList.remove(
+                    "speaking"
+                );
+
+            }
+
+        };
+
+        speech.onerror=function(){
+
+            if(button){
+
+                button.classList.remove(
+                    "speaking"
+                );
+
+            }
+
+        };
+
+        window.speechSynthesis.speak(
+            speech
+        );
+
+    }catch(e){}
+
+}
+
+function speakQuestion(text){
+
+    if(!voiceEnabled){
+        return;
+    }
+
+    if(!canUseVoice()){
+        return;
+    }
+
+    try{
+
+        window.speechSynthesis.cancel();
+
+        var utterance=
+            new SpeechSynthesisUtterance(
+                text
+            );
+
+        utterance.lang="en-IN";
+        utterance.rate=.88;
+        utterance.pitch=1.03;
+        utterance.volume=1;
+
+        var button=
+            document.getElementById(
+                "voiceButton"
+            );
+
+        if(button){
+
+            button.classList.add(
+                "speaking"
+            );
+
+            utterance.onend=function(){
+
+                button.classList.remove(
+                    "speaking"
+                );
+
+            };
+
+            utterance.onerror=function(){
+
+                button.classList.remove(
+                    "speaking"
+                );
+
+            };
+
+        }
+
+        window.speechSynthesis.speak(
+            utterance
+        );
+
+    }catch(e){}
+
+}
+
+function speakCurrentQuestion(){
+
+    if(
+        !currentLevelQuestions ||
+        !currentLevelQuestions[currentQuestion]
+    ){
+        return;
+    }
+
+    speakQuestion(
+        currentLevelQuestions[
+            currentQuestion
+        ].q
+    );
+
+}
+
+function toggleVoice(){
+
+    voiceEnabled=true;
+
+    var button=
+        document.getElementById(
+            "voiceToggleButton"
+        );
+
+    if(button){
+
+        button.textContent=
+            "🔊 Voice ON";
+
+    }
+
+    speakCurrentQuestion();
+
+}
+
+
+/* =====================================================
+   SCREEN
+===================================================== */
+
+function showScreen(id){
+
+    var screens=
+        document.querySelectorAll(
+            ".screen"
+        );
+
+    for(
+        var i=0;
+        i<screens.length;
+        i++
+    ){
+
+        screens[i].classList.remove(
+            "active"
+        );
+
+    }
+
+    var target=
+        document.getElementById(id);
+
+    if(target){
+
+        target.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   START GAME
+===================================================== */
+
+function startGame(){
+
+    applyTheme();
+
+    initAudio();
+
+    startMusic();
+
+    clickSound();
+
+    updateHome();
+
+    showScreen(
+        "homeScreen"
+    );
+
+}
+
+
+/* =====================================================
+   HOME
+===================================================== */
+
+function updateHome(){
+
+    document.getElementById(
+        "homeCoins"
+    ).textContent=coins;
+
+    document.getElementById(
+        "homeGems"
+    ).textContent=gems;
+
+    document.getElementById(
+        "homeXP"
+    ).textContent=xp;
+
+    document.getElementById(
+        "playerLevel"
+    ).textContent=
+        Math.floor(xp/100)+1;
+
+    renderRankPage();
+
+}
+
+function renderRankPage(){
+
+    if(rankPage<0){
+        rankPage=0;
+    }
+
+    if(
+        rankPage>=rankPages.length
+    ){
+
+        rankPage=
+            rankPages.length-1;
+
+    }
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent=
+        "Page "+
+        (rankPage+1)+
+        " of "+
+        rankPages.length;
+
+    var grid=
+        document.getElementById(
+            "rankGrid"
+        );
+
+    grid.innerHTML="";
+
+    for(
+        var r=0;
+        r<rankPages[rankPage].length;
+        r++
+    ){
+
+        var rank=
+            rankPages[rankPage][r];
+
+        var card=
+            document.createElement(
+                "div"
+            );
+
+        card.className=
+            "rank-card";
+
+        card.innerHTML=
+            "🏆 "+
+            rank.name+
+            "<small>Choose a stage</small>";
+
+        var stageGrid=
+            document.createElement(
+                "div"
+            );
+
+        stageGrid.style.display="grid";
+
+        stageGrid.style.gridTemplateColumns=
+            "repeat(2,1fr)";
+
+        stageGrid.style.gap="8px";
+
+        stageGrid.style.marginTop="12px";
+
+        for(
+            var s=0;
+            s<rank.stages.length;
+            s++
+        ){
+
+            var stage=
+                rank.stages[s];
+
+            var button=
+                document.createElement(
+                    "button"
+                );
+
+            button.className="page-btn";
+
+            button.style.fontSize="13px";
+
+            button.style.padding="10px 3px";
+
+            var unlocked=
+                getRankUnlocked(stage);
+
+            var stageIndex=
+                allRanks.indexOf(stage);
+
+            var previousStage=
+                stageIndex>0
+                ?allRanks[stageIndex-1]
+                :null;
+
+            var stageAvailable=
+                stageIndex===0
+                ?unlocked>=1
+                :getRankUnlocked(previousStage)>=
+                 LEVELS_PER_RANK;
+
+            if(stageAvailable){
+
+                button.textContent=
+                    stage+
+                    (unlocked>1?" ✓":" 🔓");
+
+                button.onclick=
+                    (function(selectedStage){
+
+                        return function(){
+
+                            openRank(
+                                selectedStage
+                            );
+
+                        };
+
+                    })(stage);
+
+            }else{
+
+                button.classList.add(
+                    "locked"
+                );
+
+                button.disabled=true;
+
+                button.textContent=
+                    stage+" 🔒";
+
+            }
+
+            stageGrid.appendChild(
+                button
+            );
+
+        }
+
+        card.appendChild(
+            stageGrid
+        );
+
+        grid.appendChild(
+            card
+        );
+
+    }
+
+    document.getElementById(
+        "prevPageBtn"
+    ).style.display=
+        rankPage===0
+        ?"none"
+        :"inline-block";
+
+    document.getElementById(
+        "nextPageBtn"
+    ).style.display=
+        rankPage===
+        rankPages.length-1
+        ?"none"
+        :"inline-block";
+
+}
+
+function changeRankPage(direction){
+
+    rankPage+=direction;
+
+    if(rankPage<0){
+        rankPage=0;
+    }
+
+    if(
+        rankPage>=rankPages.length
+    ){
+
+        rankPage=
+            rankPages.length-1;
+
+    }
+
+    saveData();
+
+    renderRankPage();
+
+}
+
+
+/* =====================================================
+   OPEN RANK
+===================================================== */
+
+function openRank(rank){
+
+    clickSound();
+
+    var rankIndex=
+        getRankIndex(rank);
+
+    if(rankIndex<0){
+        return;
+    }
+
+    if(rankIndex>0){
+
+        var previousRank=
+            allRanks[rankIndex-1];
+
+        if(
+            getRankUnlocked(previousRank)<
+            LEVELS_PER_RANK
+        ){
+
+            alert(
+                "🔒 "+rank+
+                " is locked!\n\n"+
+                "Complete Level 50 of "+
+                previousRank+
+                " first."
+            );
+
+            return;
+
+        }
+
+    }
+
+    if(
+        getRankUnlocked(rank)<1
+    ){
+
+        alert(
+            "🔒 "+rank+
+            " is locked!"
+        );
+
+        return;
+
+    }
+
+    currentRank=rank;
+
+    currentLevel=1;
+
+    saveData();
+
+    renderLevelPage();
+
+    showScreen(
+        "levelsScreen"
+    );
+
+}
+
+
+/* =====================================================
+   LEVEL PAGE
+===================================================== */
+
+function renderLevelPage(){
+
+    var unlocked=
+        getRankUnlocked(
+            currentRank
+        );
+
+    document.getElementById(
+        "rankTitle"
+    ).textContent=
+        currentRank;
+
+    document.getElementById(
+        "unlockedDisplay"
+    ).textContent=
+        unlocked;
+
+    var grid=
+        document.getElementById(
+            "levelGrid"
+        );
+
+    grid.innerHTML="";
+
+    for(
+        var i=1;
+        i<=LEVELS_PER_RANK;
+        i++
+    ){
+
+        var button=
+            document.createElement(
+                "button"
+            );
+
+        button.className=
+            "level-btn";
+
+        if(i<=unlocked){
+
+            button.textContent=
+                i+" 🔓";
+
+            button.onclick=
+                (function(level){
+
+                    return function(){
+
+                        openLevel(level);
+
+                    };
+
+                })(i);
+
+        }else{
+
+            button.classList.add(
+                "locked"
+            );
+
+            button.textContent=
+                i+" 🔒";
+
+            button.onclick=
+                (function(level){
+
+                    return function(){
+
+                        alert(
+                            "🔒 Level "+
+                            level+
+                            " is locked!\n\n"+
+                            "Complete Level "+
+                            (level-1)+
+                            " first."
+                        );
+
+                    };
+
+                })(i);
+
+        }
+
+        grid.appendChild(
+            button
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   OPEN LEVEL
+===================================================== */
+
+function openLevel(level){
+
+    mistakeCount=0;
+
+    clickSound();
+
+    var unlocked=
+        getRankUnlocked(
+            currentRank
+        );
+
+    if(level>unlocked){
+
+        alert(
+            "🔒 Level "+
+            level+
+            " is locked!"
+        );
+
+        return;
+
+    }
+
+    if(
+        level<1 ||
+        level>LEVELS_PER_RANK
+    ){
+        return;
+    }
+
+    currentLevel=level;
+
+    currentQuestion=0;
+
+    score=0;
+
+    streak=0;
+
+    answered=false;
+
+    hintUsed=false;
+
+    shieldActive=false;
+
+    lives=isBossLevel(level)?2:3;
+
+    if(extraLives>0){
+
+        lives++;
+
+        extraLives--;
+
+        saveData();
+
+    }
+
+    currentLevelQuestions=
+        getLevelQuestions(
+            currentLevel
+        );
+
+    showScreen(
+        "quizScreen"
+    );
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   LOAD QUESTION
+===================================================== */
+
+function loadQuestion(){
+
+    clearInterval(timer);
+
+    if(canUseVoice()){
+
+        window.speechSynthesis.cancel();
+
+    }
+
+    answered=false;
+
+    hintUsed=false;
+
+    shieldActive=false;
+
+    timeLeft=
+        getLevelTime(
+            currentLevel
+        );
+
+    var q=
+        currentLevelQuestions[
+            currentQuestion
+        ];
+
+    if(!q){
+
+        alert(
+            "Question loading error. Please restart the level."
+        );
+
+        return;
+
+    }
+
+    var bossBanner=
+        document.getElementById(
+            "bossBanner"
+        );
+
+    if(isBossLevel(currentLevel)){
+
+        bossBanner.classList.add(
+            "active"
+        );
+
+        bossBanner.textContent=
+            "👑 BOSS LEVEL! 8-second timer + bonus rewards!";
+
+    }else{
+
+        bossBanner.classList.remove(
+            "active"
+        );
+
+    }
+
+    document.getElementById(
+        "levelTitle"
+    ).textContent=
+        currentRank+
+        " • Level "+
+        currentLevel+
+        " • "+
+        getDifficulty(
+            currentLevel
+        );
+
+    document.getElementById(
+        "questionNumber"
+    ).textContent=
+        "Question "+
+        (currentQuestion+1)+
+        "/"+
+        QUESTIONS_PER_LEVEL;
+
+    document.getElementById(
+        "timer"
+    ).textContent=
+        timeLeft;
+
+    document.getElementById(
+        "lives"
+    ).textContent=
+        lives;
+
+    document.getElementById(
+        "quizCoins"
+    ).textContent=
+        coins;
+
+    document.getElementById(
+        "streak"
+    ).textContent=
+        streak;
+
+    document.getElementById(
+        "hintCount"
+    ).textContent=
+        hints;
+
+    document.getElementById(
+        "shieldCount"
+    ).textContent=
+        shields;
+
+    document.getElementById(
+        "questionText"
+    ).textContent=
+        q.q;
+
+    document.getElementById(
+        "progressBar"
+    ).style.width=
+        (
+            (
+                (currentQuestion+1)/
+                QUESTIONS_PER_LEVEL
+            )*100
+        )+"%";
+
+    var answerBox=
+        document.getElementById(
+            "answers"
+        );
+
+    answerBox.innerHTML="";
+
+    for(
+        var i=0;
+        i<q.a.length;
+        i++
+    ){
+
+        var button=
+            document.createElement(
+                "button"
+            );
+
+        button.className=
+            "answer-btn";
+
+        button.textContent=
+            q.a[i];
+
+        button.onclick=
+            (function(index,btn){
+
+                return function(){
+
+                    checkAnswer(
+                        index,
+                        btn
+                    );
+
+                };
+
+            })(i,button);
+
+        answerBox.appendChild(
+            button
+        );
+
+    }
+
+    document.getElementById(
+        "message"
+    ).textContent="";
+
+    startTimer();
+
+    setTimeout(
+        function(){
+
+            if(!answered){
+
+                speakCurrentQuestion();
+
+            }
+
+        },
+        500
+    );
+
+}
+
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+function startTimer(){
+
+    clearInterval(timer);
+
+    timer=setInterval(
+        function(){
+
+            timeLeft--;
+
+            document.getElementById(
+                "timer"
+            ).textContent=
+                timeLeft;
+
+            if(timeLeft<=0){
+
+                clearInterval(timer);
+
+                if(!answered){
+
+                    timeOut();
+
+                }
+
+            }
+
+        },
+        1000
+    );
+
+}
+
+
+/* =====================================================
+   TIME OUT
+===================================================== */
+
+function timeOut(){
+
+    if(answered){
+        return;
+    }
+
+    answered=true;
+
+    totalAnswered++;
+
+    wrongSound();
+
+    document.getElementById(
+        "message"
+    ).textContent=
+        "⏰ Time's up!";
+
+    /* FIX: streak was never reset on a timeout,
+       only on a wrong-answer click. This let a
+       player keep an active streak (and its
+       bonus payouts) after failing a question by
+       simply letting the clock run out. */
+    streak=0;
+
+    document.getElementById(
+        "streak"
+    ).textContent=
+        streak;
+
+    loseLife();
+
+    if(lives<=0){
+
+        setTimeout(
+            function(){
+                gameOver();
+            },
+            800
+        );
+
+    }else{
+
+        setTimeout(
+            function(){
+                nextQuestion();
+            },
+            900
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CHECK ANSWER
+===================================================== */
+
+function checkAnswer(index,button){
+
+    if(answered){
+        return;
+    }
+
+    answered=true;
+
+    clearInterval(timer);
+
+    if(canUseVoice()){
+
+        window.speechSynthesis.cancel();
+
+    }
+
+    var q=
+        currentLevelQuestions[
+            currentQuestion
+        ];
+
+    if(index===q.correct){
+
+        correctAnswer(button);
+
+    }else{
+
+        wrongAnswer(
+            button,
+            q.correct
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CORRECT ANSWER
+===================================================== */
+
+function correctAnswer(button){
+
+    correctSound();
+
+    button.classList.add(
+        "correct"
+    );
+
+    score++;
+
+    streak++;
+
+    totalAnswered++;
+
+    totalCorrect++;
+
+    if(streak>bestStreak){
+
+        bestStreak=streak;
+
+    }
+
+    coins+=10;
+
+    xp+=20;
+
+    var message=
+        "✅ Correct! 🔥 Streak: "+
+        streak;
+
+    if(streak===3){
+
+        coins+=15;
+        xp+=10;
+
+        message=
+            "🔥🔥 3 STREAK! +15 🪙 +10 XP";
+
+    }else if(streak===5){
+
+        coins+=30;
+        xp+=20;
+
+        message=
+            "🔥🔥🔥 5 STREAK! +30 🪙 +20 XP";
+
+    }else if(streak===7){
+
+        coins+=50;
+        xp+=30;
+
+        message=
+            "🔥🔥🔥🔥 7 STREAK! +50 🪙 +30 XP";
+
+    }else if(streak===10){
+
+        coins+=100;
+        xp+=50;
+        gems+=3;
+
+        message=
+            "👑🔥 10 STREAK! +100 🪙 +50 XP +3 💎";
+
+    }else if(
+        streak>10 &&
+        streak%3===0
+    ){
+
+        coins+=25;
+        xp+=10;
+
+        message=
+            "💎 COMBO! "+
+            streak+
+            " correct in a row! +25 🪙 +10 XP";
+
+    }
+
+    document.getElementById(
+        "message"
+    ).textContent=
+        message;
+
+    document.getElementById(
+        "streak"
+    ).textContent=
+        streak;
+
+    document.getElementById(
+        "quizCoins"
+    ).textContent=
+        coins;
+
+    saveData();
+
+    updateHome();
+
+    setTimeout(
+        function(){
+
+            nextQuestion();
+
+        },
+        1000
+    );
+
+}
+
+
+/* =====================================================
+   WRONG ANSWER
+===================================================== */
+
+function wrongAnswer(
+    button,
+    correctIndex
+){
+
+    totalAnswered++;
+
+    mistakeCount++;
+
+    wrongSound();
+
+    button.classList.add(
+        "wrong"
+    );
+
+    var buttons=
+        document.querySelectorAll(
+            ".answer-btn"
+        );
+
+    if(buttons[correctIndex]){
+
+        buttons[correctIndex]
+            .classList.add(
+                "correct"
+            );
+
+    }
+
+    var q=
+        currentLevelQuestions[
+            currentQuestion
+        ];
+
+    var correctText=
+        q.a[q.correct];
+
+    streak=0;
+
+    document.getElementById(
+        "streak"
+    ).textContent=
+        streak;
+
+    if(shieldActive){
+
+        shieldActive=false;
+
+        document.getElementById(
+            "message"
+        ).textContent=
+            "🛡️ Shield protected you!";
+
+        saveData();
+
+        setTimeout(
+            function(){
+
+                speakText(
+                    "Wrong answer. The correct answer is "+
+                    correctText
+                );
+
+            },
+            250
+        );
+
+    }else{
+
+        document.getElementById(
+            "message"
+        ).textContent=
+            "❌ Wrong answer!";
+
+        setTimeout(
+            function(){
+
+                speakText(
+                    "The correct answer is "+
+                    correctText
+                );
+
+            },
+            250
+        );
+
+        loseLife();
+
+    }
+
+    saveData();
+
+    setTimeout(
+        function(){
+
+            if(lives>0){
+
+                nextQuestion();
+
+            }
+
+        },
+        1200
+    );
+
+}
+
+
+/* =====================================================
+   LOSE LIFE
+===================================================== */
+
+function loseLife(){
+
+    lives--;
+
+    document.getElementById(
+        "lives"
+    ).textContent=
+        lives;
+
+    if(lives<=0){
+
+        clearInterval(timer);
+
+    }
+
+}
+
+
+/* =====================================================
+   GAME OVER
+===================================================== */
+
+function gameOver(){
+
+    clearInterval(timer);
+
+    if(canUseVoice()){
+
+        window.speechSynthesis.cancel();
+
+    }
+
+    wrongSound();
+
+    alert(
+        "❤️ Game Over!\n\n"+
+        "You used all your lives.\n"+
+        "Try again!"
+    );
+
+    goHome();
+
+}
+
+
+/* =====================================================
+   NEXT QUESTION
+===================================================== */
+
+function nextQuestion(){
+
+    if(lives<=0){
+
+        gameOver();
+
+        return;
+
+    }
+
+    currentQuestion++;
+
+    if(
+        currentQuestion>=
+        QUESTIONS_PER_LEVEL
+    ){
+
+        finishLevel();
+
+        return;
+
+    }
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   MYSTERY REWARDS
+===================================================== */
+
+var mysteryRewards=[
+
+    {
+        icon:"💰",
+        name:"Coin Jackpot",
+        type:"coins",
+        value:250
+    },
+
+    {
+        icon:"💎",
+        name:"Gem Jackpot",
+        type:"gems",
+        value:8
+    },
+
+    {
+        icon:"❤️",
+        name:"Extra Lives",
+        type:"lives",
+        value:3
+    },
+
+    {
+        icon:"🛡️",
+        name:"Shield Pack",
+        type:"shield",
+        value:2
+    },
+
+    {
+        icon:"⭐",
+        name:"XP Boost",
+        type:"xp",
+        value:150
+    },
+
+    {
+        icon:"🎁",
+        name:"Mega Prize",
+        type:"mega",
+        value:400
+    }
+
+];
+
+
+/* =====================================================
+   FINISH LEVEL
+===================================================== */
+
+function finishLevel(){
+
+    clearInterval(timer);
+
+    if(canUseVoice()){
+
+        window.speechSynthesis.cancel();
+
+    }
+
+    winSound();
+
+    coins+=50;
+
+    xp+=50;
+
+    levelsWon++;
+
+    var perfectBonus=
+        score===QUESTIONS_PER_LEVEL;
+
+    if(perfectBonus){
+
+        perfectLevels++;
+
+        coins+=100;
+
+        gems+=2;
+
+    }
+
+    if(isBossLevel(currentLevel)){
+
+        bossWins++;
+
+        coins+=150;
+
+        xp+=100;
+
+        gems+=5;
+
+        setTimeout(
+            function(){
+                bossSound();
+            },
+            250
+        );
+
+    }
+
+    updateAchievements();
+
+    var unlocked=
+        getRankUnlocked(
+            currentRank
+        );
+
+    if(
+        currentLevel===unlocked &&
+        currentLevel<LEVELS_PER_RANK
+    ){
+
+        setRankUnlocked(
+            currentRank,
+            currentLevel+1
+        );
+
+    }
+
+    saveData();
+
+    updateHome();
+
+    renderLevelPage();
+
+    document.getElementById(
+        "resultTitle"
+    ).textContent=
+        "🎉 "+
+        currentRank+
+        " • Level "+
+        currentLevel+
+        " Complete!";
+
+    document.getElementById(
+        "resultEmoji"
+    ).textContent=
+        "🏆";
+
+    document.getElementById(
+        "resultScore"
+    ).textContent=
+        score;
+
+    var earnedCoins=
+        50+
+        (perfectBonus?100:0)+
+        (isBossLevel(currentLevel)?150:0);
+
+    var earnedXP=
+        50+
+        (isBossLevel(currentLevel)?100:0);
+
+    document.getElementById(
+        "resultCoins"
+    ).textContent=
+        earnedCoins;
+
+    document.getElementById(
+        "resultXP"
+    ).textContent=
+        earnedXP;
+
+    var nextArea=
+        document.getElementById(
+            "nextLevelArea"
+        );
+
+    var bonusText="";
+
+    if(perfectBonus){
+
+        bonusText+=
+            "<p>💎 PERFECT LEVEL! +100 🪙 +2 💎</p>";
+
+    }
+
+    if(isBossLevel(currentLevel)){
+
+        bonusText+=
+            "<p>👑 BOSS DEFEATED! +150 🪙 +100 XP +5 💎</p>";
+
+    }
+
+    if(
+        currentLevel<
+        LEVELS_PER_RANK
+    ){
+
+        nextArea.innerHTML=
+            bonusText+
+            "<p>🔓 Level "+
+            (currentLevel+1)+
+            " unlocked!</p>"+
+            '<button class="main-btn" onclick="goToNextLevel()">'+
+            "▶️ Next Level"+
+            "</button>";
+
+    }else{
+
+        var rankIndex=
+            getRankIndex(
+                currentRank
+            );
+
+        if(
+            rankIndex>=0 &&
+            rankIndex<allRanks.length-1
+        ){
+
+            var nextRank=
+                allRanks[
+                    rankIndex+1
+                ];
+
+            setRankUnlocked(
+                nextRank,
+                1
+            );
+
+            nextArea.innerHTML=
+                bonusText+
+                "<p>🎉 You completed all 50 levels of "+
+                currentRank+
+                "!</p>"+
+                "<p>🔓 Next rank: <strong>"+
+                nextRank+
+                "</strong></p>"+
+                '<button class="main-btn" onclick="openRankByName(\''+
+                nextRank.replace(
+                    /'/g,
+                    "\\'"
+                )+
+                "')\">"+
+                "🏆 Open "+
+                nextRank+
+                "</button>";
+
+        }else{
+
+            document.getElementById(
+                "resultTitle"
+            ).textContent=
+                "👑 QUIZ MEDIAS CHAMPION!";
+
+            document.getElementById(
+                "resultEmoji"
+            ).textContent=
+                "👑🎉🏆";
+
+            nextArea.innerHTML=
+                bonusText+
+                "<p>Congratulations! You completed every rank!</p>";
+
+        }
+
+    }
+
+    mysteryBoxOpened=false;
+
+    document.getElementById(
+        "mysteryReward"
+    ).style.display=
+        "none";
+
+    document.getElementById(
+        "mysteryReward"
+    ).textContent="";
+
+    document.getElementById(
+        "mysteryBoxButton"
+    ).disabled=false;
+
+    document.getElementById(
+        "mysteryBoxButton"
+    ).style.opacity="1";
+
+    document.getElementById(
+        "mysteryBoxButton"
+    ).textContent=
+        "🎁 OPEN MYSTERY BOX";
+
+    showScreen(
+        "resultScreen"
+    );
+
+}
+
+
+/* =====================================================
+   OPEN RANK BY NAME
+===================================================== */
+
+function openRankByName(rank){
+
+    openRank(rank);
+
+}
+
+
+/* =====================================================
+   NEXT LEVEL
+===================================================== */
+
+function goToNextLevel(){
+
+    var next=
+        currentLevel+1;
+
+    if(
+        next<=
+        getRankUnlocked(
+            currentRank
+        )
+    ){
+
+        openLevel(next);
+
+    }else{
+
+        alert(
+            "Complete the current level first."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   RESTART
+===================================================== */
+
+function restartLevel(){
+
+    openLevel(
+        currentLevel
+    );
+
+}
+
+
+/* =====================================================
+   50/50
+===================================================== */
+
+function useFiftyFifty(){
+
+    if(answered){
+        return;
+    }
+
+    if(hintUsed){
+
+        alert(
+            "You already used 50/50 for this question."
+        );
+
+        return;
+
+    }
+
+    if(hints<=0){
+
+        alert(
+            "You don't have a 50/50 hint.\n\n"+
+            "Buy one from the Shop."
+        );
+
+        return;
+
+    }
+
+    hints--;
+
+    hintUsed=true;
+
+    saveData();
+
+    var q=
+        currentLevelQuestions[
+            currentQuestion
+        ];
+
+    var buttons=
+        document.querySelectorAll(
+            ".answer-btn"
+        );
+
+    var removed=0;
+
+    for(
+        var i=0;
+        i<buttons.length;
+        i++
+    ){
+
+        if(
+            i!==q.correct &&
+            removed<2
+        ){
+
+            buttons[i].style.visibility=
+                "hidden";
+
+            removed++;
+
+        }
+
+    }
+
+    document.getElementById(
+        "hintCount"
+    ).textContent=
+        hints;
+
+}
+
+
+/* =====================================================
+   SHIELD
+===================================================== */
+
+function useShield(){
+
+    if(answered){
+        return;
+    }
+
+    if(shieldActive){
+
+        alert(
+            "Shield is already active."
+        );
+
+        return;
+
+    }
+
+    if(shields<=0){
+
+        alert(
+            "You don't have a shield.\n\n"+
+            "Buy one from the Shop."
+        );
+
+        return;
+
+    }
+
+    shields--;
+
+    shieldActive=true;
+
+    saveData();
+
+    document.getElementById(
+        "shieldCount"
+    ).textContent=
+        shields;
+
+    document.getElementById(
+        "message"
+    ).textContent=
+        "🛡️ Shield activated!";
+
+}
+
+
+/* =====================================================
+   SHOP
+===================================================== */
+
+function openShop(){
+
+    updateShop();
+
+    showScreen(
+        "shopScreen"
+    );
+
+}
+
+function updateShop(){
+
+    document.getElementById(
+        "shopCoins"
+    ).textContent=
+        coins;
+
+    document.getElementById(
+        "extraLifeCount"
+    ).textContent=
+        extraLives;
+
+    document.getElementById(
+        "shopHintCount"
+    ).textContent=
+        hints;
+
+    document.getElementById(
+        "shopShieldCount"
+    ).textContent=
+        shields;
+
+}
+
+function buyLife(){
+
+    if(coins<50){
+
+        alert(
+            "You need 50 coins."
+        );
+
+        return;
+
+    }
+
+    coins-=50;
+
+    extraLives++;
+
+    saveData();
+
+    updateShop();
+
+    updateHome();
+
+    alert(
+        "❤️ Extra Life purchased!"
+    );
+
+}
+
+function buyHint(){
+
+    if(coins<30){
+
+        alert(
+            "You need 30 coins."
+        );
+
+        return;
+
+    }
+
+    coins-=30;
+
+    hints++;
+
+    saveData();
+
+    updateShop();
+
+    updateHome();
+
+    alert(
+        "✂️ 50/50 Hint purchased!"
+    );
+
+}
+
+function buyShield(){
+
+    if(coins<75){
+
+        alert(
+            "You need 75 coins."
+        );
+
+        return;
+
+    }
+
+    coins-=75;
+
+    shields++;
+
+    saveData();
+
+    updateShop();
+
+    updateHome();
+
+    alert(
+        "🛡️ Shield purchased!"
+    );
+
+}
+
+
+/* =====================================================
+   MYSTERY BOX
+===================================================== */
+
+function openMysteryBox(){
+
+    if(mysteryBoxOpened){
+
+        alert(
+            "🎁 You already opened this Mystery Box!"
+        );
+
+        return;
+
+    }
+
+    mysteryBoxOpened=true;
+
+    var button=
+        document.getElementById(
+            "mysteryBoxButton"
+        );
+
+    var reward=
+        document.getElementById(
+            "mysteryReward"
+        );
+
+    var random=Math.random();
+
+    var rewardText="";
+
+    if(random<.40){
+
+        var coinReward=
+            Math.floor(
+                Math.random()*101
+            )+50;
+
+        coins+=coinReward;
+
+        rewardText=
+            "🪙 AMAZING! You won "+
+            coinReward+
+            " coins!";
+
+    }else if(random<.60){
+
+        var gemReward=
+            Math.floor(
+                Math.random()*6
+            )+5;
+
+        gems+=gemReward;
+
+        rewardText=
+            "💎 AMAZING! You won "+
+            gemReward+
+            " gems!";
+
+    }else if(random<.75){
+
+        extraLives++;
+
+        rewardText=
+            "❤️ AMAZING! You won 1 Extra Life!";
+
+    }else if(random<.90){
+
+        hints++;
+
+        rewardText=
+            "✂️ AMAZING! You won 1 FREE 50/50 Hint!";
+
+    }else{
+
+        shields++;
+
+        rewardText=
+            "🛡️ AMAZING! You won 1 FREE Shield!";
+
+    }
+
+    saveData();
+
+    updateHome();
+
+    reward.style.display=
+        "block";
+
+    reward.textContent=
+        "🎉 "+
+        rewardText;
+
+    button.disabled=true;
+
+    button.style.opacity=".5";
+
+    button.textContent=
+        "✅ BOX OPENED";
+
+    winSound();
+
+}
+
+
+/* =====================================================
+   HOME
+===================================================== */
+
+function goHome(){
+
+    clearInterval(timer);
+
+    if(canUseVoice()){
+
+        window.speechSynthesis.cancel();
+
+    }
+
+    saveData();
+
+    updateHome();
+
+    showScreen(
+        "homeScreen"
+    );
+
+}
+
+
+/* =====================================================
+   MAP
+===================================================== */
+
+function openMap(){
+
+    renderMap();
+
+    showScreen(
+        "mapScreen"
+    );
+
+}
+
+function renderMap(){
+
+    var grid=
+        document.getElementById(
+            "mapGrid"
+        );
+
+    grid.innerHTML="";
+
+    var unlocked=
+        getRankUnlocked(
+            currentRank
+        );
+
+    document.getElementById(
+        "mapRankName"
+    ).textContent=
+        currentRank;
+
+    document.getElementById(
+        "mapInfo"
+    ).textContent=
+        "🔓 You have unlocked up to Level "+
+        unlocked+".";
+
+    for(
+        var i=1;
+        i<=LEVELS_PER_RANK;
+        i++
+    ){
+
+        var b=
+            document.createElement(
+                "button"
+            );
+
+        b.className=
+            "map-node";
+
+        if(i>unlocked){
+
+            b.classList.add(
+                "locked"
+            );
+
+            b.textContent=
+                i+" 🔒";
+
+        }else{
+
+            if(i===currentLevel){
+
+                b.classList.add(
+                    "current"
+                );
+
+            }
+
+            if(isBossLevel(i)){
+
+                b.classList.add(
+                    "boss-node"
+                );
+
+            }
+
+            b.textContent=
+                isBossLevel(i)
+                ?i+" 👑"
+                :i+" ⭐";
+
+            b.onclick=
+                (function(level){
+
+                    return function(){
+
+                        openLevel(level);
+
+                    };
+
+                })(i);
+
+        }
+
+        grid.appendChild(b);
+
+    }
+
+}
+
+
+/* =====================================================
+   ACHIEVEMENTS
+===================================================== */
+
+var achievementList=[
+
+{
+id:"first",
+icon:"🌟",
+name:"First Win",
+desc:"Complete your first level"
+},
+
+{
+id:"ten",
+icon:"🔥",
+name:"10 Correct",
+desc:"Answer 10 questions correctly"
+},
+
+{
+id:"streak5",
+icon:"🔥",
+name:"Hot Streak",
+desc:"Reach a 5 answer streak"
+},
+
+{
+id:"streak10",
+icon:"👑",
+name:"Unstoppable",
+desc:"Reach a 10 answer streak"
+},
+
+{
+id:"perfect",
+icon:"💎",
+name:"Perfect Level",
+desc:"Finish a level with 5/5"
+},
+
+{
+id:"boss",
+icon:"👑",
+name:"Boss Slayer",
+desc:"Defeat a boss level"
+},
+
+{
+id:"hundred",
+icon:"💯",
+name:"Century",
+desc:"Answer 100 questions"
+},
+
+{
+id:"daily",
+icon:"📅",
+name:"Daily Hero",
+desc:"Complete a daily challenge"
+}
+
+];
+
+function updateAchievements(){
+
+    if(levelsWon>=1){
+        achievements.first=true;
+    }
+
+    if(totalCorrect>=10){
+        achievements.ten=true;
+    }
+
+    if(bestStreak>=5){
+        achievements.streak5=true;
+    }
+
+    if(bestStreak>=10){
+        achievements.streak10=true;
+    }
+
+    if(perfectLevels>=1){
+        achievements.perfect=true;
+    }
+
+    if(bossWins>=1){
+        achievements.boss=true;
+    }
+
+    if(totalAnswered>=100){
+        achievements.hundred=true;
+    }
+
+    if(
+        dailyCompletedDate===
+        getTodayKey()
+    ){
+
+        achievements.daily=true;
+
+    }
+
+    localStorage.setItem(
+        "quiz_medias_fresh_achievements",
+        JSON.stringify(achievements)
+    );
+
+}
+
+function openAchievements(){
+
+    updateAchievements();
+
+    var grid=
+        document.getElementById(
+            "achievementGrid"
+        );
+
+    grid.innerHTML="";
+
+    for(
+        var i=0;
+        i<achievementList.length;
+        i++
+    ){
+
+        var a=
+            achievementList[i];
+
+        var d=
+            document.createElement(
+                "div"
+            );
+
+        d.className=
+            "badge"+
+            (
+                achievements[a.id]
+                ?" unlocked"
+                :""
+            );
+
+        d.innerHTML=
+            "<strong>"+
+            a.icon+
+            " "+
+            a.name+
+            "</strong><br>"+
+            "<span class='small'>"+
+            a.desc+
+            "</span><br>"+
+            (
+                achievements[a.id]
+                ?"✅ UNLOCKED"
+                :"🔒 Locked"
+            );
+
+        grid.appendChild(d);
+
+    }
+
+    showScreen(
+        "achievementsScreen"
+    );
+
+}
+
+
+/* =====================================================
+   STATISTICS
+===================================================== */
+
+function openStatistics(){
+
+    updateAchievements();
+
+    var accuracy=
+        totalAnswered>0
+        ?Math.round(
+            (
+                totalCorrect/
+                totalAnswered
+            )*100
+        )
+        :0;
+
+    document.getElementById(
+        "statQuestions"
+    ).textContent=
+        totalAnswered;
+
+    document.getElementById(
+        "statCorrect"
+    ).textContent=
+        totalCorrect;
+
+    document.getElementById(
+        "statAccuracy"
+    ).textContent=
+        accuracy+"%";
+
+    document.getElementById(
+        "statBestStreak"
+    ).textContent=
+        bestStreak;
+
+    document.getElementById(
+        "statLevels"
+    ).textContent=
+        levelsWon;
+
+    document.getElementById(
+        "statBossWins"
+    ).textContent=
+        bossWins;
+
+    document.getElementById(
+        "statGems"
+    ).textContent=
+        gems;
+
+    document.getElementById(
+        "statXP"
+    ).textContent=
+        xp;
+
+    showScreen(
+        "statisticsScreen"
+    );
+
+}
+
+
+/* =====================================================
+   THEMES
+===================================================== */
+
+var themeList=[
+
+{
+id:"sky",
+name:"Candy Sky",
+price:0,
+cls:"theme-sky"
+},
+
+{
+id:"sunset",
+name:"Sunset",
+price:200,
+cls:"theme-sunset"
+},
+
+{
+id:"ocean",
+name:"Ocean",
+price:300,
+cls:"theme-ocean"
+},
+
+{
+id:"space",
+name:"Space",
+price:500,
+cls:"theme-space"
+},
+
+{
+id:"forest",
+name:"Forest",
+price:400,
+cls:"theme-forest"
+}
+
+];
+
+function applyTheme(){
+
+    document.body.classList.remove(
+        "theme-sunset",
+        "theme-ocean",
+        "theme-space",
+        "theme-forest"
+    );
+
+    if(selectedTheme!=="sky"){
+
+        document.body.classList.add(
+            "theme-"+selectedTheme
+        );
+
+    }
+
+}
+
+function openThemes(){
+
+    renderThemes();
+
+    showScreen(
+        "themesScreen"
+    );
+
+}
+
+function renderThemes(){
+
+    var grid=
+        document.getElementById(
+            "themeGrid"
+        );
+
+    grid.innerHTML="";
+
+    document.getElementById(
+        "themeCoins"
+    ).textContent=
+        coins;
+
+    for(
+        var i=0;
+        i<themeList.length;
+        i++
+    ){
+
+        var t=
+            themeList[i];
+
+        var b=
+            document.createElement(
+                "button"
+            );
+
+        b.className=
+            "theme-btn "+
+            t.cls+
+            (
+                selectedTheme===t.id
+                ?" selected"
+                :""
+            );
+
+        var owned=
+            unlockedThemes.indexOf(
+                t.id
+            )!==-1;
+
+        b.innerHTML=
+            "<strong>"+
+            t.name+
+            "</strong><br>"+
+            (
+                owned
+                ?"✅ Unlocked"
+                :"🪙 "+t.price+" coins"
+            )+
+            (
+                selectedTheme===t.id
+                ?"<br>⭐ Selected"
+                :""
+            );
+
+        b.onclick=
+            (function(theme){
+
+                return function(){
+
+                    selectTheme(
+                        theme.id
+                    );
+
+                };
+
+            })(t);
+
+        grid.appendChild(b);
+
+    }
+
+}
+
+function selectTheme(id){
+
+    var t=null;
+
+    for(
+        var i=0;
+        i<themeList.length;
+        i++
+    ){
+
+        if(
+            themeList[i].id===id
+        ){
+
+            t=themeList[i];
+
+            break;
+
+        }
+
+    }
+
+    if(!t){
+        return;
+    }
+
+    if(
+        unlockedThemes.indexOf(id)===-1
+    ){
+
+        if(coins<t.price){
+
+            alert(
+                "You need "+
+                t.price+
+                " coins to unlock this theme."
+            );
+
+            return;
+
+        }
+
+        coins-=t.price;
+
+        unlockedThemes.push(id);
+
+        saveData();
+
+    }
+
+    selectedTheme=id;
+
+    applyTheme();
+
+    saveData();
+
+    renderThemes();
+
+    clickSound();
+
+}
+
+
+/* =====================================================
+   DAILY CHALLENGE
+===================================================== */
+
+var dailyQuestions=[];
+
+var dailyIndex=0;
+
+var dailyScore=0;
+
+function getTodayKey(){
+
+    var d=new Date();
+
+    return(
+        d.getFullYear()+
+        "-"+
+        String(
+            d.getMonth()+1
+        ).padStart(2,"0")+
+        "-"+
+        String(
+            d.getDate()
+        ).padStart(2,"0")
+    );
+
+}
+
+function getDailyPool(){
+
+    var hard=
+        advancedQuestionPool.slice();
+
+    var pool=
+        questionPool.slice();
+
+    for(
+        var i=0;
+        i<pool.length;
+        i++
+    ){
+
+        var text=
+            pool[i].q.toLowerCase();
+
+        if(
+            text.includes("force")||
+            text.includes("energy")||
+            text.includes("pressure")||
+            text.includes("speed")||
+            text.includes("law")||
+            text.includes("scalar")||
+            text.includes("vector")||
+            text.includes("orbit")
+        ){
+
+            hard.push(
+                pool[i]
+            );
+
+        }
+
+    }
+
+    var unique=[];
+
+    var seen={};
+
+    for(
+        var j=0;
+        j<hard.length;
+        j++
+    ){
+
+        if(!seen[hard[j].q]){
+
+            seen[hard[j].q]=true;
+
+            unique.push(
+                hard[j]
+            );
+
+        }
+
+    }
+
+    var seed=0;
+
+    var key=getTodayKey();
+
+    for(
+        var k=0;
+        k<key.length;
+        k++
+    ){
+
+        seed=
+            (
+                seed*31+
+                key.charCodeAt(k)
+            )>>>0;
+
+    }
+
+    for(
+        var x=unique.length-1;
+        x>0;
+        x--
+    ){
+
+        seed=
+            (
+                seed*1664525+
+                1013904223
+            )>>>0;
+
+        var y=
+            seed%(x+1);
+
+        var temp=
+            unique[x];
+
+        unique[x]=unique[y];
+
+        unique[y]=temp;
+
+    }
+
+    return unique.slice(0,5);
+
+}
+
+function openDailyChallenge(){
+
+    dailyAnswered=false;
+
+    dailyIndex=0;
+
+    dailyScore=0;
+
+    var today=getTodayKey();
+
+    document.getElementById(
+        "dailyDate"
+    ).textContent=
+        "📅 "+
+        today+
+        " • 5 VERY DIFFICULT QUESTIONS";
+
+    dailyQuestions=
+        getDailyPool();
+
+    if(
+        dailyCompletedDate===today
+    ){
+
+        document.getElementById(
+            "dailyMessage"
+        ).textContent=
+            "✅ You already completed today's challenge.";
+
+        renderDailyQuestion();
+
+        disableDailyButtons();
+
+        showScreen(
+            "dailyScreen"
+        );
+
+        return;
+
+    }
+
+    renderDailyQuestion();
+
+    document.getElementById(
+        "dailyStreak"
+    ).textContent=
+        dailyStreak;
+
+    showScreen(
+        "dailyScreen"
+    );
+
+}
+
+function renderDailyQuestion(){
+
+    dailyAnswered=false;
+
+    var q=
+        dailyQuestions[
+            dailyIndex
+        ];
+
+    if(!q){
+        return;
+    }
+
+    dailyQuestion=
+        shuffleQuestionOptions(q);
+
+    document.getElementById(
+        "dailyQuestion"
+    ).textContent=
+        "Question "+
+        (dailyIndex+1)+
+        " / 5\n\n"+
+        dailyQuestion.q;
+
+    document.getElementById(
+        "dailyMessage"
+    ).textContent=
+        "🔥 Very difficult! Score: "+
+        dailyScore+
+        "/5";
+
+    var box=
+        document.getElementById(
+            "dailyAnswers"
+        );
+
+    box.innerHTML="";
+
+    for(
+        var j=0;
+        j<dailyQuestion.a.length;
+        j++
+    ){
+
+        var b=
+            document.createElement(
+                "button"
+            );
+
+        b.className=
+            "answer-btn";
+
+        b.textContent=
+            dailyQuestion.a[j];
+
+        b.onclick=
+            (function(index,btn){
+
+                return function(){
+
+                    checkDailyAnswer(
+                        index,
+                        btn
+                    );
+
+                };
+
+            })(j,b);
+
+        box.appendChild(b);
+
+    }
+
+    speakQuestion(
+        dailyQuestion.q
+    );
+
+}
+
+function disableDailyButtons(){
+
+    var buttons=
+        document.querySelectorAll(
+            "#dailyAnswers .answer-btn"
+        );
+
+    for(
+        var i=0;
+        i<buttons.length;
+        i++
+    ){
+
+        buttons[i].disabled=true;
+
+    }
+
+}
+
+function checkDailyAnswer(
+    index,
+    button
+){
+
+    if(
+        dailyAnswered ||
+        !dailyQuestion
+    ){
+
+        return;
+
+    }
+
+    if(
+        dailyCompletedDate===
+        getTodayKey()
+    ){
+
+        return;
+
+    }
+
+    dailyAnswered=true;
+
+    var buttons=
+        document.querySelectorAll(
+            "#dailyAnswers .answer-btn"
+        );
+
+    for(
+        var i=0;
+        i<buttons.length;
+        i++
+    ){
+
+        buttons[i].disabled=true;
+
+    }
+
+    if(
+        index===
+        dailyQuestion.correct
+    ){
+
+        button.classList.add(
+            "correct"
+        );
+
+        dailyScore++;
+
+        document.getElementById(
+            "dailyMessage"
+        ).textContent=
+            "🔥 CORRECT! "+
+            dailyScore+
+            "/5";
+
+        correctSound();
+
+    }else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+        if(
+            buttons[dailyQuestion.correct]
+        ){
+
+            buttons[
+                dailyQuestion.correct
+            ].classList.add(
+                "correct"
+            );
+
+        }
+
+        document.getElementById(
+            "dailyMessage"
+        ).textContent=
+            "❌ Wrong! Correct answer shown. "+
+            dailyScore+
+            "/5";
+
+        wrongSound();
+
+    }
+
+    setTimeout(
+        function(){
+
+            if(dailyIndex<4){
+
+                dailyIndex++;
+
+                renderDailyQuestion();
+
+            }else{
+
+                finishDailyChallenge();
+
+            }
+
+        },
+        850
+    );
+
+}
+
+function finishDailyChallenge(){
+
+    var today=getTodayKey();
+
+    if(dailyScore===5){
+
+        dailyStreak++;
+
+        coins+=300;
+
+        xp+=200;
+
+        gems+=5;
+
+        dailyLastDate=today;
+
+        dailyCompletedDate=today;
+
+        document.getElementById(
+            "dailyMessage"
+        ).textContent=
+            "🏆 PERFECT 5/5! +300 🪙 +200 XP +5 💎";
+
+        dailySound();
+
+    }else if(dailyScore>=3){
+
+        dailyStreak++;
+
+        coins+=150;
+
+        xp+=100;
+
+        gems+=2;
+
+        dailyLastDate=today;
+
+        dailyCompletedDate=today;
+
+        document.getElementById(
+            "dailyMessage"
+        ).textContent=
+            "🎉 Challenge complete! "+
+            dailyScore+
+            "/5 • +150 🪙 +100 XP +2 💎";
+
+        dailySound();
+
+    }else{
+
+        coins+=50;
+
+        xp+=40;
+
+        dailyCompletedDate=today;
+
+        document.getElementById(
+            "dailyMessage"
+        ).textContent=
+            "💪 Challenge complete! "+
+            dailyScore+
+            "/5 • +50 🪙 +40 XP";
+
+    }
+
+    totalAnswered+=5;
+
+    totalCorrect+=dailyScore;
+
+    if(
+        dailyStreak>bestStreak
+    ){
+
+        bestStreak=dailyStreak;
+
+    }
+
+    updateAchievements();
+
+    saveData();
+
+    updateHome();
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+applyTheme();
+
+updateAchievements();
+
+updateHome();
+
+</script>
+
+</body>
+</html>
